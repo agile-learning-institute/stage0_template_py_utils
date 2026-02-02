@@ -1,0 +1,16 @@
+info:
+  name: Creator Dashboard
+  description: A dashboard the help creators measure the impact of their efforts. 
+  slug: CreatorDashboard
+  developer_cli: de
+  mongodb_name: engagement
+
+organization:
+  name: Agile Crafts People
+  founded: 2025
+  slug: agile-crafts-people
+  git_host: https://github.com
+  git_org: agile-crafts-people
+  docker_host: ghcr.io
+  docker_org: agile-crafts-people
+

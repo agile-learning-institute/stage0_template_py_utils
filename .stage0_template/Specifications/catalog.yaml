@@ -1,0 +1,7 @@
+data_dictionaries:
+  - name: Identity
+    description: The Identity of a person who is a user of the system.
+    version: 0.1.0
+  - name: Profile
+    description: User Profile associated with one **Identity**.
+    version: 0.1.0
