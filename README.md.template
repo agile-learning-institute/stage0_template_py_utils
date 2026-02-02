@@ -1,6 +1,6 @@
 # api_utils
 
-This repo builds and publishes a shared PyPI library used across the [Creator Dashboard](https://github.com/agile-crafts-people/CreatorDashboard) system.
+This repo builds and publishes a shared PyPI library used across the [{{info.name}}](https://github.com/{{org.git_org}}/{{info.slug}}) system.
 
 ## ⚠️ Security Requirements
 
@@ -225,45 +225,6 @@ git config --global credential.helper store
 # On first git operation, enter your username and token as password
 ```
 
-## Standards Compliance
-
-This package follows the Creator Dashboard API standards:
-- ✅ Config singleton for configuration management
-- ✅ Logging initialized by Config singleton
-- ✅ Prometheus metrics endpoint for monitoring
-- ✅ Config endpoint for runtime configuration
-- ✅ Standard pipenv scripts (build, dev, test)
-- ✅ server.py as standard API entry point
-- ✅ JWT authentication with signature verification
-- ✅ Security-first design with fail-fast validation
-- ✅ **Architecture alignment** - Port numbers and collection names match `architecture.yaml`
-
-### Architecture Integration
-
-All port numbers and collection names are defined to match the [Creator Dashboard architecture](https://github.com/agile-crafts-people/CreatorDashboard/blob/main/Specifications/architecture.yaml):
-
-**Ports by Domain:**
-- Common Code: 8080
-- MongoDB: 8180-8181
-- Runbook: 8083-8084
-- Templates: 8081-8082
-- Profile: 8182-8183
-- Evaluator: 8184-8185
-- Dashboard: 8186-8187
-- Classifier: 8188-8189
-
-**Collection Names by Domain:**
-- System: DatabaseEnumerators, CollectionVersions
-- Template: Control, Create, Consume
-- Profile: Profile, Platform, User
-- Evaluator: TestRun, TestData, Grade
-- Dashboard: Dashboard, Post, Comment
-- Classifier: Sentiment, Ratio
-
-See [ARCHITECTURE_ALIGNMENT.md](./ARCHITECTURE_ALIGNMENT.md) for complete details and migration notes.
-
-Note: The standards specify FastAPI, but this utility package uses Flask from familiarity. The package structure supports migration to FastAPI in the future. 
-
 ## Security
 
 api_utils implements security best practices including:
@@ -285,22 +246,9 @@ Before deploying to production, ensure:
 
 # Future Roadmap
 
-api_utils is the official standards-compliant Python package used by all Creator Dashboard python projects. It is currently installed via HTTPS with GitHub Personal Access Tokens (PATs). 
+api_utils is the official standards-compliant Python package used by all {{info.name}} python projects. It is currently installed via HTTPS with GitHub Personal Access Tokens (PATs). 
 
-✅ **Completed:** Identity Testing endpoint (`/dev-login`) to issue JWTs for local development and testing.
-
-In a future release, we will implement automated validation tests on every PR Merged to Main ensuring changes to api_utils don’t silently break consumers.
-
-Once a number of production deployed consumers exist, version stability becomes important so they can pin known-good releases instead of tracking a moving branch. We will introduce semantic versioning via Git tags and expose the version in the package, allowing consumers to pin exact versions.
-
-As usage grows, build performance and reproducibility start to matter, especially in CI and container builds. We will add a release workflow that builds wheels and source distributions on tag pushes, producing immutable binary artifacts.
-
-After versioned artifacts exist, consumer environments should become deterministic rather than dependency-resolution-dependent. We will adopt lock files (poetry.lock or compiled requirements.txt) in consuming repos, ensuring reproducible installs across machines and CI.
-
-Once funding or organizational maturity allows, infrastructure improvements can replace the Git-based distribution without changing the package itself.
+Infrastructure improvements can replace the Git-based distribution without changing the package itself.
 	•	Stand up a private JFrog Artifactory PyPI repository, providing centralized, permissioned package hosting.
 	•	Migrate consumers from git+https installs to the private PyPI index by changing only index configuration, preserving package names and versions.
 	•	Enable artifact promotion, vulnerability scanning, and access controls (e.g., Xray, repo permissions).
-
-As the ecosystem grows, the package itself may need clearer guarantees.
-	•	Formalize API stability rules, deprecation policies, and backward-compatibility contracts.

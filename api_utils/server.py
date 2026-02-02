@@ -89,5 +89,5 @@ signal.signal(signal.SIGINT, handle_exit)
 
 # Expose app for Gunicorn or direct execution
 if __name__ == "__main__":
-    logger.info(f"Starting Flask server on port {config.PY_UTILS_API_PORT}")
-    app.run(host="0.0.0.0", port=config.PY_UTILS_API_PORT, debug=False)
+    logger.info(f"Starting Flask server on port {config.COMMON_CODE_API_PORT}")
+    app.run(host="0.0.0.0", port=config.COMMON_CODE_API_PORT, debug=False)

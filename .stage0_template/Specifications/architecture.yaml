@@ -22,21 +22,24 @@ architecture:
         - name: api_utils
           description: Python PyPI API Utility Library
           template: stage0_template_py_utils
-          port: N/A
+          type: api
+          port: 8080
         - name: spa_utils
           description: Vue NPM SPA Utility Library
           template: stage0_template_vue_utils
-          port: N/A
+          type: spa
+          port: 8081
     - name: mongodb
       description: MongoDB Database Configuration and Management.
       repos:
         - name: mongodb_api
           description: MongoDB Configurator API Server
           template: agile-learning-institute/mongodb_configurator_api
+          type: api
           port: 8180
         - name: configurator_spa
           description: MongoDB Configurator SPA (utility container, not a real repository)
-          template: N/A
+          type: spa_ref
           port: 8181
     - name: runbook
       description: SRE Automation using Stage0 Runbook System for operational automation
@@ -44,10 +47,11 @@ architecture:
         - name: runbook_api
           description: Runbook Automation API Server
           template: agile-learning-institute/stage0_runbook_template
+          type: api
           port: 8182
         - name: runbook_spa
           description: Runbook Automation Single Page Web Application (utility container, not a real repository)
-          template: N/A
+          type: spa_ref
           port: 8183
     - name: templates
       description: Template repos that support stage0_runbook_merge 
@@ -61,9 +65,11 @@ architecture:
       repos:
         - name: template_flask_mongo
           description: Flask API Template with MongoDB Database
+          type: api
           port: 8184
         - name: template_vue_vuetify
           description: Vue Vuetify SPA Template
+          type: spa
           port: 8185
     - name: dashboard
       description: YouTube Ratio Reporting - Product MVP.
@@ -80,10 +86,12 @@ architecture:
         - name: dashboard_api
           description: Dashboard API Server
           template: agile-crafts-people/template_flask_mongo
+          type: api
           port: 8190
         - name: dashboard_spa
           description: Dashboard Single Page Web Application
           template: agile-crafts-people/template_vue_vuetify
+          type: spa
           port: 8191
     - name: classifier
       description: Comment Sentiment Analysis and Classifier 
@@ -99,8 +107,10 @@ architecture:
         - name: classifier_api
           description: Sentiment Analysis Classifier API Server
           template: agile-crafts-people/template_flask_mongo
+          type: api
           port: 8192
         - name: classifier_spa
           description: Sentiment Analysis Classifier Single Page Web Application
           template: agile-crafts-people/template_vue_vuetify
+          type: spa
           port: 8193

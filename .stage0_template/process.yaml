@@ -15,50 +15,45 @@ context:
   - key: dictionaries
     type: path
     path: specifications.catalog.data_dictionaries
+  - key: architecture
+    type: path
+    path: specifications.architecture
 
 requires:
-  - org.name
-  - org.founded
-  - org.git_host
-  - org.git_org
-  - org.docker_host
-  - org.docker_org
   - info.name
-  - info.description
   - info.slug
-  - info.developer_cli
   - info.mongodb_name
+  - org.name
+  - org.git_org
+  - dictionaries   
+  - architecture.domains
 
 templates:
-  - path: "./.github/workflows/docker-push.yml"
-    merge: true
-  - path: "./Dockerfile"
-    merge: true
-  - path: "./docker-compose.yaml"
+  - path: "./api_utils/config/config.py"
     merge: true
   - path: "./LICENSE"
     merge: true
   - path: "./README.md.template"
     output: "./README.md"
     merge: true
-  - path: "./Makefile.template"
-    output: "./Makefile"
+  - path: "./Makefile"
+    output: "/dev/null"
     merge: true
 
-  # Configurations from data_catalog
-  - path: "./configurator/configurations/collection.yaml.template"
+  # Config Test Data files for each Collection Name
+  - path: "./tests/test_data/config/STRING.template"
     mergeFor:
       items: dictionaries
-      output: "./configurator/configurations/{{name}}.yaml"
+      output: "./tests/test_data/config/{{name | to_uppercase}}_COLLECTION_NAME"
 
-  # Dictionaries from catalog
-  - path: "./configurator/dictionaries/collection.yaml.template"
+  # Config Test Data for Port Numbers
+  - path: "./tests/test_data/config/API_PORT.template"
     mergeFor:
-      items: dictionaries
-      output: "./configurator/dictionaries/{{name}}.{{version}}.yaml"
+      items: architecture.domains
+      output: "./tests/test_data/config/{{name | to_uppercase}}_API_PORT"
+  - path: "./tests/test_data/config/SPA_PORT.template"
+    mergeFor:
+      items: architecture.domains
+      output: "./tests/test_data/config/{{name | to_uppercase}}_SPA_PORT"
 
-  # Test Data from data_catalog
-  - path: "./configurator/test_data/collection.json.template"
-    mergeFor:
-      items: dictionaries
-      output: "./configurator/test_data/{{name}}.{{version}}.0.json"
+  
