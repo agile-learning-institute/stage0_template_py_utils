@@ -95,19 +95,22 @@ class Config:
             self.VERSIONS_COLLECTION_NAME = ''
 
             # Collection Names
-            <% for dictionary in dictionaries: %>
-            self.{{ dictionary.name | to_uppercase }}_COLLECTION_NAME = ''
-            <% endfor %>
-
-            # Service Port numbers 
-            <% for domain in architecture.domains: %>
-                <% for repo in domain.repos: %>
-                if repo.type == 'api':
-            self.{{ domain.name | to_uppercase }}_API_PORT = {{repo.port}}
-                elif repo.type == 'spa' or repo.type == 'spa_ref':
-            self.{{ domain.name | to_uppercase }}_SPA_PORT = {{repo.port}}
-                <% endfor %>
-            <% endfor %>
+{% for dictionary in dictionaries -%}
+{{ '            ' -}}
+self.{{ dictionary.name | upper }}_COLLECTION_NAME = ''
+{% endfor %}
+            # Service Port numbers
+{% for domain in architecture.domains -%}
+{% for repo in domain.repos -%}
+{% if repo.type == 'api' -%}
+{{ '            ' -}}
+self.{{ domain.name | upper }}_API_PORT = 0
+{% elif repo.type == 'spa' or repo.type == 'spa_ref' -%}
+{{ '            ' -}}
+self.{{ domain.name | upper }}_SPA_PORT = 0
+{% endif -%}
+{% endfor -%}
+{% endfor %}
 
             # Default Values grouped by value type            
             self.config_strings = {
@@ -116,7 +119,7 @@ class Config:
                 "INPUT_FOLDER": "/input",
                 "OUTPUT_FOLDER": "/output",
                 "LOGGING_LEVEL": "INFO", 
-                "MONGO_DB_NAME": "{{info.mongodb_name}}"
+                "MONGO_DB_NAME": "{{info.mongodb_name}}",
                 
                 # JWT Configuration
                 "JWT_ALGORITHM": "HS256",
@@ -128,24 +131,28 @@ class Config:
                 "VERSIONS_COLLECTION_NAME": "CollectionVersions",
                 
                 # Collection Names
-                <% for dictionary in dictionaries: %>
-                "{{ dictionary.name | to_uppercase }}_COLLECTION_NAME": "{{ dictionary.name }}",
-                <% endfor %>                
-            }
+{% for dictionary in dictionaries -%}
+{{ '                ' -}}
+"{{ dictionary.name | upper }}_COLLECTION_NAME": "{{ dictionary.name }}",
+{% endfor -%}                
+{{ '            ' -}}
+}
             self.config_ints = {
                 # JWT Configuration
                 "JWT_TTL_MINUTES": "480",
 
                 # Service Port numbers 
-                <% for domain in architecture.domains: %>
-                  <% for repo in domain.repos: %>
-                  if repo.type == 'api':
-                self.{{ domain.name | to_uppercase }}_API_PORT = {{repo.port}}
-                  elif repo.type == 'spa' or repo.type == 'spa_ref':
-                self.{{ domain.name | to_uppercase }}_SPA_PORT = {{repo.port}}
-                  <% endfor %>
-                <% endfor %>
-                
+{% for domain in architecture.domains -%}
+{% for repo in domain.repos -%}
+{% if repo.type == 'api' -%}
+{{ '                ' -}}
+"{{ domain.name | upper }}_API_PORT": {{ repo.port }},
+{% elif repo.type == 'spa' or repo.type == 'spa_ref' -%}
+{{ '                ' -}}
+"{{ domain.name | upper }}_SPA_PORT": {{ repo.port }},
+{% endif -%}
+{% endfor -%}
+{% endfor %}                
             }
 
             self.config_booleans = {

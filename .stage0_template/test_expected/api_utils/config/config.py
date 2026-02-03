@@ -75,78 +75,6 @@ class Config:
             self.LOGGING_LEVEL = ''
             self.ENABLE_LOGIN = False
 
-            # MongoDB Configuration
-            self.MONGO_DB_NAME = ''
-            self.MONGO_CONNECTION_STRING = ''
-
-            # Batch Processing Configuration
-            self.INPUT_FOLDER = ''
-            self.OUTPUT_FOLDER = ''
-
-            # LLM Backing Service Configuration
-            self.OLLAMA_HOST = ''
-            self.OLLAMA_MODELS = []
-
-            # System Collection Names
-            self.ENUMERATORS_COLLECTION_NAME = ''
-            self.VERSIONS_COLLECTION_NAME = ''
-
-            # Template Domain Collection Names
-            self.CONTROL_COLLECTION_NAME = ''
-            self.CREATE_COLLECTION_NAME = ''
-            self.CONSUME_COLLECTION_NAME = ''
-
-            # Profile Domain Collection Names
-            self.PROFILE_COLLECTION_NAME = ''
-            self.PLATFORM_COLLECTION_NAME = ''
-            self.USER_COLLECTION_NAME = ''
-
-            # Evaluator Domain Collection Names
-            self.TESTRUN_COLLECTION_NAME = ''
-            self.TESTDATA_COLLECTION_NAME = ''
-            self.GRADE_COLLECTION_NAME = ''
-
-            # Dashboard Domain Collection Names
-            self.DASHBOARD_COLLECTION_NAME = ''
-            self.POST_COLLECTION_NAME = ''
-            self.COMMENT_COLLECTION_NAME = ''
-
-            # Classifier Domain Collection Names
-            self.SENTIMENT_COLLECTION_NAME = ''
-            self.RATIO_COLLECTION_NAME = ''
-
-            # API Port numbers from architecture.yaml
-            # Common Code Domain
-            self.PY_UTILS_API_PORT = 0
-            
-            # MongoDB Domain
-            self.MONGODB_API_PORT = 0
-            self.CONFIGURATOR_SPA_PORT = 0
-            
-            # Runbook Domain
-            self.RUNBOOK_API_PORT = 0
-            self.RUNBOOK_SPA_PORT = 0
-            
-            # Template Domain
-            self.TEMPLATE_API_PORT = 0
-            self.TEMPLATE_SPA_PORT = 0
-            
-            # Profile Domain
-            self.PROFILE_API_PORT = 0
-            self.PROFILE_SPA_PORT = 0
-            
-            # Evaluator Domain
-            self.EVALUATOR_API_PORT = 0
-            self.EVALUATOR_SPA_PORT = 0
-            
-            # Dashboard Domain
-            self.DASHBOARD_API_PORT = 0
-            self.DASHBOARD_SPA_PORT = 0
-            
-            # Classifier Domain
-            self.CLASSIFIER_API_PORT = 0
-            self.CLASSIFIER_SPA_PORT = 0
-
             # JWT Configuration
             self.JWT_SECRET = ''
             self.JWT_ALGORITHM = ''
@@ -154,6 +82,37 @@ class Config:
             self.JWT_AUDIENCE = ''
             self.JWT_TTL_MINUTES = 0
     
+            # MongoDB Backing Service Configuration
+            self.MONGO_DB_NAME = ''
+            self.MONGO_CONNECTION_STRING = ''
+
+            # Batch Processing Configuration
+            self.INPUT_FOLDER = ''
+            self.OUTPUT_FOLDER = ''
+
+            # System Collection Names
+            self.ENUMERATORS_COLLECTION_NAME = ''
+            self.VERSIONS_COLLECTION_NAME = ''
+
+            # Collection Names
+            self.IDENTITY_COLLECTION_NAME = ''
+            self.PROFILE_COLLECTION_NAME = ''
+
+            # Service Port numbers
+            self.COMMON_CODE_API_PORT = 0
+            self.COMMON_CODE_SPA_PORT = 0
+            self.MONGODB_API_PORT = 0
+            self.MONGODB_SPA_PORT = 0
+            self.RUNBOOK_API_PORT = 0
+            self.RUNBOOK_SPA_PORT = 0
+            self.TEMPLATE_API_PORT = 0
+            self.TEMPLATE_SPA_PORT = 0
+            self.DASHBOARD_API_PORT = 0
+            self.DASHBOARD_SPA_PORT = 0
+            self.CLASSIFIER_API_PORT = 0
+            self.CLASSIFIER_SPA_PORT = 0
+
+
             # Default Values grouped by value type            
             self.config_strings = {
                 "BUILT_AT": "LOCAL",
@@ -162,75 +121,38 @@ class Config:
                 "OUTPUT_FOLDER": "/output",
                 "LOGGING_LEVEL": "INFO", 
                 "MONGO_DB_NAME": "engagement",
-                "OLLAMA_HOST": "http://localhost:11434",
-                
-                # System Collection Names
-                "ENUMERATORS_COLLECTION_NAME": "DatabaseEnumerators",
-                "VERSIONS_COLLECTION_NAME": "CollectionVersions",
-                
-                # Template Domain Collection Names
-                "CONTROL_COLLECTION_NAME": "Control",
-                "CREATE_COLLECTION_NAME": "Create",
-                "CONSUME_COLLECTION_NAME": "Consume",
-                
-                # Profile Domain Collection Names
-                "PROFILE_COLLECTION_NAME": "Profile",
-                "PLATFORM_COLLECTION_NAME": "Platform",
-                "USER_COLLECTION_NAME": "User",
-                
-                # Evaluator Domain Collection Names
-                "TESTRUN_COLLECTION_NAME": "TestRun",
-                "TESTDATA_COLLECTION_NAME": "TestData",
-                "GRADE_COLLECTION_NAME": "Grade",
-                
-                # Dashboard Domain Collection Names
-                "DASHBOARD_COLLECTION_NAME": "Dashboard",
-                "POST_COLLECTION_NAME": "Post",
-                "COMMENT_COLLECTION_NAME": "Comment",
-                
-                # Classifier Domain Collection Names
-                "SENTIMENT_COLLECTION_NAME": "Sentiment",
-                "RATIO_COLLECTION_NAME": "Ratio",
                 
                 # JWT Configuration
                 "JWT_ALGORITHM": "HS256",
                 "JWT_ISSUER": "dev-idp",
                 "JWT_AUDIENCE": "dev-api",
+
+                # System Collection Names
+                "ENUMERATORS_COLLECTION_NAME": "DatabaseEnumerators",
+                "VERSIONS_COLLECTION_NAME": "CollectionVersions",
+                
+                # Collection Names
+                "IDENTITY_COLLECTION_NAME": "Identity",
+                "PROFILE_COLLECTION_NAME": "Profile",
             }
             self.config_ints = {
-                # Common Code Domain Ports
-                "PY_UTILS_API_PORT": "8080",
-                
-                # MongoDB Domain Ports
-                "MONGODB_API_PORT": "8180",
-                "CONFIGURATOR_SPA_PORT": "8181",
-                
-                # Runbook Domain Ports
-                "RUNBOOK_API_PORT": "8182",
-                "RUNBOOK_SPA_PORT": "8183",
-                
-                # Template Domain Ports
-                "TEMPLATE_API_PORT": "8184",
-                "TEMPLATE_SPA_PORT": "8185",
-                
-                # Profile Domain Ports
-                "PROFILE_API_PORT": "8186",
-                "PROFILE_SPA_PORT": "8187",
-                
-                # Evaluator Domain Ports
-                "EVALUATOR_API_PORT": "8188",
-                "EVALUATOR_SPA_PORT": "8189",
-                
-                # Dashboard Domain Ports
-                "DASHBOARD_API_PORT": "8190",
-                "DASHBOARD_SPA_PORT": "8191",
-                
-                # Classifier Domain Ports
-                "CLASSIFIER_API_PORT": "8192",
-                "CLASSIFIER_SPA_PORT": "8193",
-                
                 # JWT Configuration
                 "JWT_TTL_MINUTES": "480",
+
+                # Service Port numbers 
+                "COMMON_CODE_API_PORT": 8080,
+                "COMMON_CODE_SPA_PORT": 8081,
+                "MONGODB_API_PORT": 8180,
+                "MONGODB_SPA_PORT": 8181,
+                "RUNBOOK_API_PORT": 8182,
+                "RUNBOOK_SPA_PORT": 8183,
+                "TEMPLATE_API_PORT": 8184,
+                "TEMPLATE_SPA_PORT": 8185,
+                "DASHBOARD_API_PORT": 8190,
+                "DASHBOARD_SPA_PORT": 8191,
+                "CLASSIFIER_API_PORT": 8192,
+                "CLASSIFIER_SPA_PORT": 8193,
+                
             }
 
             self.config_booleans = {
@@ -238,7 +160,6 @@ class Config:
             }            
 
             self.config_json_defaults = {
-                "OLLAMA_MODELS": "[]"
             }            
 
             self.config_string_secrets = {  
@@ -472,4 +393,3 @@ class Config:
             
         # logger.log("Config Initializing")
         return Config._instance
-

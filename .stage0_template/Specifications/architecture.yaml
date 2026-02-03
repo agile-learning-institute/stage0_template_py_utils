@@ -53,7 +53,7 @@ architecture:
           description: Runbook Automation Single Page Web Application (utility container, not a real repository)
           type: spa_ref
           port: 8183
-    - name: templates
+    - name: template
       description: Template repos that support stage0_runbook_merge 
       data_domains:
         controls:
