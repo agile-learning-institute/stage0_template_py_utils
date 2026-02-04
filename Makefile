@@ -1,9 +1,11 @@
-.PHONY: help test clean merge
+.PHONY: help test clean merge diff take
 
 help:
 	@echo "  make test             - Run tests using ~/temp folder"
 	@echo "  make clean            - Clean up temporary test files"
 	@echo "  make merge            - Merge templates and remove template configuration"
+	@echo "  make diff <filespec>  - Diff temp vs expected for a single file"
+	@echo "  make take <filespec>  - Overwrite expected file with temp file"
 
 test:
 	@TEMP_REPO="$$HOME/tmp/testRepo"; \
@@ -45,6 +47,30 @@ merge:
 		-v "$$CONTEXT_PATH:/specifications" \
 		-e LOG_LEVEL="$$LOG_LEVEL" \
 		ghcr.io/agile-learning-institute/stage0_runbook_merge:latest
+
+diff:
+	@FILESPEC="$(firstword $(filter-out diff,$(MAKECMDGOALS)))"; \
+	if [ -z "$$FILESPEC" ]; then \
+		echo "Usage: make diff <filespec>  (e.g. make diff DeveloperEdition/mh)"; \
+		exit 1; \
+	fi; \
+	TEMP="$$HOME/tmp/testRepo/$$FILESPEC"; \
+	EXP="$(PWD)/.stage0_template/test_expected/$$FILESPEC"; \
+	if [ ! -f "$$TEMP" ]; then echo "Temp file not found: $$TEMP"; exit 1; fi; \
+	if [ ! -f "$$EXP" ]; then echo "Expected file not found: $$EXP"; exit 1; fi; \
+	diff "$$TEMP" "$$EXP"
+
+take:
+	@FILESPEC="$(firstword $(filter-out take,$(MAKECMDGOALS)))"; \
+	if [ -z "$$FILESPEC" ]; then \
+		echo "Usage: make take <filespec>  (e.g. make take DeveloperEdition/mh)"; \
+		exit 1; \
+	fi; \
+	TEMP="$$HOME/tmp/testRepo/$$FILESPEC"; \
+	EXP="$(PWD)/.stage0_template/test_expected/$$FILESPEC"; \
+	if [ ! -f "$$TEMP" ]; then echo "Temp file not found: $$TEMP"; exit 1; fi; \
+	cp "$$TEMP" "$$EXP"; \
+	echo "Updated $$EXP from $$TEMP"
 
 %:
 	@:
