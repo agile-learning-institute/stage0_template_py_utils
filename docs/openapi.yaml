@@ -1,0 +1,386 @@
+openapi: 3.0.3
+info:
+  title: api_utils Demo Server
+  description: |
+    Demonstration server for the api_utils Python package.
+    
+    This server showcases the utilities provided by api_utils:
+    - Config singleton for configuration management
+    - MongoIO singleton for MongoDB operations
+    - Flask routes for config endpoint
+    - JWT authentication and token validation
+    - Prometheus metrics endpoint
+    
+    ## Authentication
+    
+    Most endpoints require JWT authentication. For development, use the `/dev-login` endpoint to obtain a token:
+    
+    ```bash
+    # Get a development token
+    TOKEN=$(curl -s -X POST http://localhost:8080/dev-login \
+      -H "Content-Type: application/json" \
+      -d '{"subject": "test-user", "roles": ["developer"]}' | \
+      jq -r '.access_token')
+    
+    # Use the token
+    curl -H "Authorization: Bearer $TOKEN" http://localhost:8080/api/config
+    ```
+    
+    **Note:** The `/dev-login` endpoint is only available when `ENABLE_LOGIN=true`.
+    Never enable this in production environments.
+    
+    ## Security Requirements
+    
+    **CRITICAL:** `JWT_SECRET` must be explicitly set before using api_utils.
+    The application will fail to start if `JWT_SECRET` is not configured.
+    
+    See the [SECURITY.md](https://github.com/agile-crafts-people/api_utils/blob/main/SECURITY.md) 
+    for complete security documentation.
+    
+  version: 1.0.0
+  contact:
+    name: Agile Crafts People
+    url: https://github.com/agile-crafts-people/api_utils
+  license:
+    name: MIT
+
+servers:
+  - url: http://localhost:8080
+    description: Local development server (default)
+
+tags:
+  - name: Authentication
+    description: Development authentication endpoints
+  - name: Configuration
+    description: Runtime configuration endpoints
+  - name: Monitoring
+    description: Prometheus metrics and health endpoints
+
+paths:
+  /dev-login:
+    post:
+      tags:
+        - Authentication
+      summary: Get development JWT token
+      description: |
+        Issue a signed JWT token for development and testing.
+        
+        **Security Warning:** This endpoint is only enabled when `ENABLE_LOGIN=true`.
+        Never enable this endpoint in production environments as it allows anyone to
+        generate tokens with arbitrary roles.
+        
+        When disabled, this endpoint returns 404 (not 403) to hide its existence.
+      operationId: devLogin
+      requestBody:
+        description: Token request with optional subject and roles
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DevLoginRequest'
+            examples:
+              default:
+                summary: Default values
+                value: {}
+              custom:
+                summary: Custom subject and roles
+                value:
+                  subject: "test-user-123"
+                  roles: ["developer", "admin"]
+      responses:
+        '200':
+          description: JWT token generated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DevLoginResponse'
+        '403':
+          description: Error generating token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Dev-login endpoint is disabled
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      x-code-samples:
+        - lang: curl
+          source: |
+            curl -X POST "http://localhost:8080/dev-login" \
+              -H "Content-Type: application/json" \
+              -d '{"subject": "test-user", "roles": ["developer"]}'
+    
+    options:
+      tags:
+        - Authentication
+      summary: CORS preflight for dev-login
+      description: Handle CORS preflight requests for the dev-login endpoint
+      operationId: devLoginOptions
+      responses:
+        '200':
+          description: CORS headers returned
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                example: "*"
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+                example: "POST, OPTIONS"
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+                example: "Content-Type, Authorization"
+
+  /api/config:
+    get:
+      tags:
+        - Configuration
+      summary: Get runtime configuration
+      description: |
+        Retrieve the current runtime configuration including:
+        - Configuration items with their sources (file, environment, default)
+        - Database enumerators
+        - Collection versions
+        - Token information
+        
+        Secret values are masked in the response.
+      operationId: getConfig
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Configuration retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConfigResponse'
+        '401':
+          description: Unauthorized - missing or invalid authentication token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      x-code-samples:
+        - lang: curl
+          source: |
+            # First get a token
+            TOKEN=$(curl -s -X POST http://localhost:8080/dev-login \
+              -H "Content-Type: application/json" \
+              -d '{}' | jq -r '.access_token')
+            
+            # Then get config
+            curl -X GET "http://localhost:8080/api/config" \
+              -H "Authorization: Bearer $TOKEN"
+
+  /metrics:
+    get:
+      tags:
+        - Monitoring
+      summary: Prometheus metrics endpoint
+      description: |
+        Prometheus-compatible metrics endpoint for monitoring.
+        
+        This endpoint is automatically exposed by the `create_metric_routes()` function
+        and provides metrics about:
+        - HTTP request counts and durations
+        - Response status codes
+        - Active requests
+        
+        No authentication required.
+      operationId: getMetrics
+      responses:
+        '200':
+          description: Prometheus metrics in text format
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: |
+                  # HELP flask_http_request_duration_seconds Flask HTTP request duration in seconds
+                  # TYPE flask_http_request_duration_seconds histogram
+                  flask_http_request_duration_seconds_bucket{le="0.005",method="GET",path="/api/config",status="200"} 1.0
+      x-code-samples:
+        - lang: curl
+          source: |
+            curl -X GET "http://localhost:8080/metrics"
+
+  /docs/{filename}:
+    get:
+      tags:
+        - Documentation
+      summary: Serve API documentation files
+      description: |
+        Serve static files from the docs directory including:
+        - explorer.html - Interactive API explorer (Swagger UI)
+        - openapi.yaml - OpenAPI specification
+      operationId: getDocs
+      parameters:
+        - name: filename
+          in: path
+          required: true
+          description: Documentation filename
+          schema:
+            type: string
+            example: explorer.html
+      responses:
+        '200':
+          description: Documentation file served successfully
+          content:
+            text/html:
+              schema:
+                type: string
+            text/yaml:
+              schema:
+                type: string
+        '404':
+          description: File not found
+      x-code-samples:
+        - lang: curl
+          source: |
+            # Access the API explorer
+            curl -X GET "http://localhost:8080/docs/explorer.html"
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: |
+        JWT authentication. Obtain a token from `/dev-login` endpoint (development only).
+        
+        In production, tokens should be issued by your identity provider.
+
+  schemas:
+    DevLoginRequest:
+      type: object
+      properties:
+        subject:
+          type: string
+          description: Subject (user ID) for the token
+          default: "dev-user-1"
+          example: "test-user-123"
+        roles:
+          type: array
+          items:
+            type: string
+          description: List of roles to include in the token
+          default: ["developer"]
+          example: ["developer", "admin"]
+    
+    DevLoginResponse:
+      type: object
+      required:
+        - access_token
+        - token_type
+        - expires_at
+        - subject
+        - roles
+      properties:
+        access_token:
+          type: string
+          description: JWT access token
+          example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+        token_type:
+          type: string
+          description: Token type (always "bearer")
+          example: "bearer"
+        expires_at:
+          type: string
+          format: date-time
+          description: Token expiration timestamp (ISO 8601)
+          example: "2026-01-20T12:00:00+00:00"
+        subject:
+          type: string
+          description: Subject (user ID) from the token
+          example: "test-user-123"
+        roles:
+          type: array
+          items:
+            type: string
+          description: Roles included in the token
+          example: ["developer", "admin"]
+    
+    ConfigResponse:
+      type: object
+      required:
+        - config_items
+        - versions
+        - enumerators
+        - token
+      properties:
+        config_items:
+          type: array
+          description: List of configuration items with their sources
+          items:
+            $ref: '#/components/schemas/ConfigItem'
+        versions:
+          type: array
+          description: Collection version information from MongoDB
+          items:
+            type: object
+        enumerators:
+          type: array
+          description: Database enumerator documents from MongoDB
+          items:
+            type: object
+        token:
+          type: object
+          description: Authenticated user token information
+          properties:
+            user_id:
+              type: string
+              example: "test-user-123"
+            roles:
+              type: array
+              items:
+                type: string
+              example: ["developer"]
+            remote_ip:
+              type: string
+              example: "127.0.0.1"
+    
+    ConfigItem:
+      type: object
+      required:
+        - name
+        - value
+        - from
+      properties:
+        name:
+          type: string
+          description: Configuration key name
+          example: "MONGO_DB_NAME"
+        value:
+          type: string
+          description: Configuration value (secrets are masked as "secret")
+          example: "engagement"
+        from:
+          type: string
+          enum: [file, environment, default]
+          description: Source of the configuration value
+          example: "environment"
+    
+    ErrorResponse:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: string
+          description: Error message
+          example: "Missing or invalid Authorization header"
+        details:
+          type: string
+          description: Additional error details (optional)

@@ -1,0 +1,72 @@
+$schema: "https://github.com/agile-learning-institute/stage0/blob/main/Schemas/architecture.schema.yaml"
+$id: "https://github.com/agile-learning-institute/mentorhub/blob/main/Specifications/architecture.yaml"
+title: Architecture Specification for Mentor Hub
+
+architecture:
+  organization: Agile Learning Institute
+  product: Mentor Hub
+  environments:
+    - name: local
+    - name: development
+    - name: staging
+    - name: production
+  domains:
+    - name: runbook
+      description: SRE Automation using Stage0 Runbook System for operational automation
+      repos:
+        - name: runbook_api
+          description: Runbook Automation API Server
+          template: agile-learning-institute/stage0_runbook_template
+          type: api
+          port: 8383
+        - name: runbook_spa
+          description: Runbook Automation Single Page Web Application (utility container, not a real repository)
+          template: N/A
+          type: spa_ref
+          port: 8384
+    - name: mongodb
+      description: MongoDB Database Configuration and Management.
+      repos:
+        - name: mongodb_api
+          description: MongoDB Configurator API Server
+          template: agile-learning-institute/stage0_template_configurator_api
+          type: api
+          port: 8385
+        - name: configurator_spa
+          description: MongoDB Configurator SPA (utility container, not a real repository)
+          template: N/A
+          type: spa_ref 
+          port: 8386
+    - name: common_code
+      description: Shared code used across multiple API or SPA code bases are published to private dependency management libraries (NPM /PYPI).
+      repos:
+        - name: api_utils
+          description: Python PyPI API Utility Library
+          template: agile-learning-institute/stage0_template_py_utils
+          type: api
+          port: 8387
+        - name: spa_utils
+          description: Vue NPM SPA Utility Library
+          template: agile-learning-institute/stage0_template_vue_utils
+          type: spa
+          port: 8388
+    - name: template
+      description: Template Service Domain - use for each User Journey domain.
+      data_domains:
+        controls:
+          - Control 
+        creates:
+          - Create 
+        consumes:
+          - Consume
+      repos:
+        - name: template_api
+          description: Flask API Template with MongoDB Database
+          template: agile-learning-institute/stage0_template_flask_mongo
+          type: api
+          port: 8389
+        - name: template_spa
+          description: Vue Vuetify SPA Template
+          template: agile-learning-institute/stage0_template_vue_vuetify
+          type: spa
+          port: 8390
