@@ -2,12 +2,12 @@
 E2E tests for the demo server.
 
 These tests verify that the server endpoints work correctly by making
-actual HTTP requests to a running server at localhost:8080.
+actual HTTP requests to a running server at localhost:{{info.base_port + 4}}.
 """
 import pytest
 import requests
 
-BASE_URL = "http://localhost:8080"
+BASE_URL = "http://localhost:{{info.base_port + 4}}"
 
 
 def get_auth_token():
@@ -105,4 +105,3 @@ def test_metrics_endpoint_returns_prometheus_format():
     # Prometheus metrics typically contain key-value pairs or comments
     assert '#' in content or '=' in content or '\n' in content, \
         "Metrics should be in Prometheus format"
-

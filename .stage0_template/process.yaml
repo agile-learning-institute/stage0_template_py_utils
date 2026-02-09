@@ -30,8 +30,6 @@ requires:
   - architecture.domains
 
 templates:
-  - path: "./api_utils/config/config.py"
-    merge: true
   - path: "./LICENSE"
     merge: true
   - path: "./README.md.template"
@@ -39,6 +37,12 @@ templates:
     merge: true
   - path: "./Makefile"
     output: "/dev/null"
+    merge: true
+  - path: "./Pipfile"
+    merge: true
+  - path: "./api_utils/config/config.py"
+    merge: true
+  - path: "./tests/test_server.py"
     merge: true
 
   # Config Test Data files for each Collection Name

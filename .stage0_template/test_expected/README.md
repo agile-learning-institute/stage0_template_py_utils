@@ -33,11 +33,11 @@ pipenv run db
 ## run unit tests (includes MongoIO Integration Tests)
 pipenv run test
 
-## run demo dev server - captures command line, serves API at localhost:8080
+## run demo dev server - captures command line, serves API at localhost:8387
 ## Note: ENABLE_LOGIN=true is automatically set by the dev script
 pipenv run dev
 
-## run E2E tests (assumes running API at localhost:8080)
+## run E2E tests (assumes running API at localhost:8387)
 pipenv run e2e
 
 ## build package for deployment
@@ -71,12 +71,12 @@ See [server.py](./api_utils/server.py) for sample implementation details.
 # Start the demo server (ENABLE_LOGIN=true is set automatically)
 pipenv run dev
 
-# Server will be available at http://localhost:8080
+# Server will be available at http://localhost:8387
 ```
 
 ### API Explorer
 
-Visit **http://localhost:8080/docs/explorer.html** for an interactive API explorer with:
+Visit **http://localhost:8387/docs/explorer.html** for an interactive API explorer with:
 - Complete endpoint documentation
 - Try-it-out functionality for testing
 - Request/response examples
@@ -94,16 +94,16 @@ Visit **http://localhost:8080/docs/explorer.html** for an interactive API explor
 
 ```bash
 # Get a development token
-TOKEN=$(curl -s -X POST http://localhost:8080/dev-login \
+TOKEN=$(curl -s -X POST http://localhost:8387/dev-login \
   -H "Content-Type: application/json" \
   -d '{"subject": "user-123", "roles": ["admin"]}' | jq -r '.access_token')
 
 # Get configuration
-curl http://localhost:8080/api/config \
+curl http://localhost:8387/api/config \
   -H "Authorization: Bearer $TOKEN"
 
 # Get Prometheus metrics
-curl http://localhost:8080/metrics
+curl http://localhost:8387/metrics
 ```
 
 ### What the Server Demonstrates

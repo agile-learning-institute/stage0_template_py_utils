@@ -17,13 +17,13 @@ info:
     
     ```bash
     # Get a development token
-    TOKEN=$(curl -s -X POST http://localhost:8080/dev-login \
+    TOKEN=$(curl -s -X POST http://localhost:8387/dev-login \
       -H "Content-Type: application/json" \
       -d '{"subject": "test-user", "roles": ["developer"]}' | \
       jq -r '.access_token')
     
     # Use the token
-    curl -H "Authorization: Bearer $TOKEN" http://localhost:8080/api/config
+    curl -H "Authorization: Bearer $TOKEN" http://localhost:8387/api/config
     ```
     
     **Note:** The `/dev-login` endpoint is only available when `ENABLE_LOGIN=true`.
@@ -39,13 +39,13 @@ info:
     
   version: 1.0.0
   contact:
-    name: Agile Crafts People
-    url: https://github.com/agile-crafts-people/api_utils
+    name: Agile Learning Institute
+    url: https://github.com/agile-learning-institute/mentorhub/api_utils
   license:
     name: MIT
 
 servers:
-  - url: http://localhost:8080
+  - url: http://localhost:8387
     description: Local development server (default)
 
 tags:
@@ -109,7 +109,7 @@ paths:
       x-code-samples:
         - lang: curl
           source: |
-            curl -X POST "http://localhost:8080/dev-login" \
+            curl -X POST "http://localhost:8387/dev-login" \
               -H "Content-Type: application/json" \
               -d '{"subject": "test-user", "roles": ["developer"]}'
     
@@ -175,12 +175,12 @@ paths:
         - lang: curl
           source: |
             # First get a token
-            TOKEN=$(curl -s -X POST http://localhost:8080/dev-login \
+            TOKEN=$(curl -s -X POST http://localhost:8387/dev-login \
               -H "Content-Type: application/json" \
               -d '{}' | jq -r '.access_token')
             
             # Then get config
-            curl -X GET "http://localhost:8080/api/config" \
+            curl -X GET "http://localhost:8387/api/config" \
               -H "Authorization: Bearer $TOKEN"
 
   /metrics:
@@ -213,7 +213,7 @@ paths:
       x-code-samples:
         - lang: curl
           source: |
-            curl -X GET "http://localhost:8080/metrics"
+            curl -X GET "http://localhost:8387/metrics"
 
   /docs/{filename}:
     get:
@@ -249,7 +249,7 @@ paths:
         - lang: curl
           source: |
             # Access the API explorer
-            curl -X GET "http://localhost:8080/docs/explorer.html"
+            curl -X GET "http://localhost:8387/docs/explorer.html"
 
 components:
   securitySchemes:
