@@ -17,6 +17,7 @@ architecture:
         - name: runbook_api
           description: Runbook Automation API Server
           template: agile-learning-institute/stage0_runbook_template
+          image: ghcr.io/agile-learning-institute/mentorhub_runbook_api:latest
           type: api
           port: 8383
         - name: runbook_spa
@@ -30,6 +31,7 @@ architecture:
         - name: mongodb_api
           description: MongoDB Configurator API Server
           template: agile-learning-institute/stage0_template_configurator_api
+          image: ghcr.io/agile-learning-institute/mentorhub_mongodb_api:latest
           type: api
           port: 8385
         - name: configurator_spa
@@ -63,10 +65,12 @@ architecture:
         - name: template_api
           description: Flask API Template with MongoDB Database
           template: agile-learning-institute/stage0_template_flask_mongo
+          image: ghcr.io/agile-learning-institute/mentorhub_template_api:latest
           type: api
           port: 8389
         - name: template_spa
           description: Vue Vuetify SPA Template
           template: agile-learning-institute/stage0_template_vue_vuetify
+          image: ghcr.io/agile-learning-institute/mentorhub_template_spa:latest
           type: spa
           port: 8390
