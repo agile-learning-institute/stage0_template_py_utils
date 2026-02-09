@@ -1,46 +1,16 @@
+$schema: "https://github.com/agile-learning-institute/stage0/blob/main/Schemas/architecture.schema.yaml"
+$id: "https://github.com/agile-learning-institute/mentorhub/blob/main/Specifications/architecture.yaml"
+title: Architecture Specification for Mentor Hub
+
 architecture:
-  organization: agile-crafts-people
-  product: Creator Dashboard
+  organization: Agile Learning Institute
+  product: Mentor Hub
   environments:
     - name: local
-      tag: latest
-      description: Local environment using docker-compose with :latest containers
-      backing_services:
-        - name: mongodb
-          description: Local Containerized MongoDB Database 
-        - name: identity 
-          description: Dev Login
-        - name: service_bus
-          description: Containerized Service Bus for local development
-        - name: ollama_llm
-          description: Grace-Blackwell LLM Host via VPN 
-          uri: http://spark-478a.tailb0d293.ts.net:11434
+    - name: development
+    - name: staging
+    - name: production
   domains:
-    - name: common_code
-      description: Shared code used across multiple API or SPA code bases are published to private dependency management libraries (NPM /PYPI).
-      repos:
-        - name: api_utils
-          description: Python PyPI API Utility Library
-          template: stage0_template_py_utils
-          type: api
-          port: 8080
-        - name: spa_utils
-          description: Vue NPM SPA Utility Library
-          template: stage0_template_vue_utils
-          type: spa
-          port: 8081
-    - name: mongodb
-      description: MongoDB Database Configuration and Management.
-      repos:
-        - name: mongodb_api
-          description: MongoDB Configurator API Server
-          template: agile-learning-institute/mongodb_configurator_api
-          type: api
-          port: 8180
-        - name: configurator_spa
-          description: MongoDB Configurator SPA (utility container, not a real repository)
-          type: spa_ref
-          port: 8181
     - name: runbook
       description: SRE Automation using Stage0 Runbook System for operational automation
       repos:
@@ -48,13 +18,40 @@ architecture:
           description: Runbook Automation API Server
           template: agile-learning-institute/stage0_runbook_template
           type: api
-          port: 8182
+          port: 8383
         - name: runbook_spa
           description: Runbook Automation Single Page Web Application (utility container, not a real repository)
+          template: N/A
           type: spa_ref
-          port: 8183
+          port: 8384
+    - name: mongodb
+      description: MongoDB Database Configuration and Management.
+      repos:
+        - name: mongodb_api
+          description: MongoDB Configurator API Server
+          template: agile-learning-institute/stage0_template_configurator_api
+          type: api
+          port: 8385
+        - name: configurator_spa
+          description: MongoDB Configurator SPA (utility container, not a real repository)
+          template: N/A
+          type: spa_ref 
+          port: 8386
+    - name: common_code
+      description: Shared code used across multiple API or SPA code bases are published to private dependency management libraries (NPM /PYPI).
+      repos:
+        - name: api_utils
+          description: Python PyPI API Utility Library
+          template: agile-learning-institute/stage0_template_py_utils
+          type: api
+          port: 8387
+        - name: spa_utils
+          description: Vue NPM SPA Utility Library
+          template: agile-learning-institute/stage0_template_vue_utils
+          type: spa
+          port: 8388
     - name: template
-      description: Template repos that support stage0_runbook_merge 
+      description: Template Service Domain - use for each User Journey domain.
       data_domains:
         controls:
           - Control 
@@ -63,54 +60,13 @@ architecture:
         consumes:
           - Consume
       repos:
-        - name: template_flask_mongo
+        - name: template_api
           description: Flask API Template with MongoDB Database
+          template: agile-learning-institute/stage0_template_flask_mongo
           type: api
-          port: 8184
-        - name: template_vue_vuetify
+          port: 8389
+        - name: template_spa
           description: Vue Vuetify SPA Template
+          template: agile-learning-institute/stage0_template_vue_vuetify
           type: spa
-          port: 8185
-    - name: dashboard
-      description: YouTube Ratio Reporting - Product MVP.
-      data_domains:
-        controls:
-          - Dashboard
-        creates:
-          - Post
-          - Comment
-        consumes:
-          - Classification
-          - Profile
-      repos:
-        - name: dashboard_api
-          description: Dashboard API Server
-          template: agile-crafts-people/template_flask_mongo
-          type: api
-          port: 8190
-        - name: dashboard_spa
-          description: Dashboard Single Page Web Application
-          template: agile-crafts-people/template_vue_vuetify
-          type: spa
-          port: 8191
-    - name: classifier
-      description: Comment Sentiment Analysis and Classifier 
-      data_domains:
-        controls:
-          - sentiment
-          - ratios
-        consumes:
-          - post
-          - comment
-          - user
-      repos:
-        - name: classifier_api
-          description: Sentiment Analysis Classifier API Server
-          template: agile-crafts-people/template_flask_mongo
-          type: api
-          port: 8192
-        - name: classifier_spa
-          description: Sentiment Analysis Classifier Single Page Web Application
-          template: agile-crafts-people/template_vue_vuetify
-          type: spa
-          port: 8193
+          port: 8390

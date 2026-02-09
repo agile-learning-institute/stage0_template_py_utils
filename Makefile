@@ -3,7 +3,7 @@
 help:
 	@echo "  make test             - Run tests using ~/temp folder"
 	@echo "  make clean            - Clean up temporary test files"
-	@echo "  make merge            - Merge templates and remove template configuration"
+	@echo "  make merge <specs_path>  - Merge templates (repo is .); e.g. make merge ../Specifications"
 	@echo "  make diff <filespec>  - Diff temp vs expected for a single file"
 	@echo "  make take <filespec>  - Overwrite expected file with temp file"
 

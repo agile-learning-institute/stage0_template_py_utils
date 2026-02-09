@@ -22,7 +22,8 @@ context:
 requires:
   - info.name
   - info.slug
-  - info.mongodb_name
+  - info.db_name
+  - info.base_port
   - org.name
   - org.git_org
   - dictionaries   
@@ -56,5 +57,3 @@ templates:
     mergeFor:
       items: architecture.domains
       output: "./tests/test_data/config/{{name | upper}}_SPA_PORT"
-
-  

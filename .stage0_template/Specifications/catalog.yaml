@@ -1,7 +1,9 @@
+$schema: "https://github.com/agile-learning-institute/stage0/blob/main/Schemas/catalog.schema.yaml"
+$id: "https://github.com/agile-learning-institute/mentorhub/blob/main/Specifications/catalog.yaml"
+title: Data Dictionary Catalog Specification for Mentor Hub
+
 data_dictionaries:
   - name: Identity
-    description: The Identity of a person who is a user of the system.
-    version: 0.1.0
+    description: The IdP Identity of a person who is a user of the system. 
   - name: Profile
-    description: User Profile associated with one **Identity**.
-    version: 0.1.0
+    description: User Preferences associated with one **Identity**.

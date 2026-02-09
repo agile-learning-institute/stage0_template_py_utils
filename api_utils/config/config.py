@@ -119,7 +119,7 @@ self.{{ domain.name | upper }}_SPA_PORT = 0
                 "INPUT_FOLDER": "/input",
                 "OUTPUT_FOLDER": "/output",
                 "LOGGING_LEVEL": "INFO", 
-                "MONGO_DB_NAME": "{{info.mongodb_name}}",
+                "MONGO_DB_NAME": "{{info.db_name}}",
                 
                 # JWT Configuration
                 "JWT_ALGORITHM": "HS256",

@@ -99,18 +99,14 @@ class Config:
             self.PROFILE_COLLECTION_NAME = ''
 
             # Service Port numbers
-            self.COMMON_CODE_API_PORT = 0
-            self.COMMON_CODE_SPA_PORT = 0
-            self.MONGODB_API_PORT = 0
-            self.MONGODB_SPA_PORT = 0
             self.RUNBOOK_API_PORT = 0
             self.RUNBOOK_SPA_PORT = 0
+            self.MONGODB_API_PORT = 0
+            self.MONGODB_SPA_PORT = 0
+            self.COMMON_CODE_API_PORT = 0
+            self.COMMON_CODE_SPA_PORT = 0
             self.TEMPLATE_API_PORT = 0
             self.TEMPLATE_SPA_PORT = 0
-            self.DASHBOARD_API_PORT = 0
-            self.DASHBOARD_SPA_PORT = 0
-            self.CLASSIFIER_API_PORT = 0
-            self.CLASSIFIER_SPA_PORT = 0
 
 
             # Default Values grouped by value type            
@@ -120,7 +116,7 @@ class Config:
                 "INPUT_FOLDER": "/input",
                 "OUTPUT_FOLDER": "/output",
                 "LOGGING_LEVEL": "INFO", 
-                "MONGO_DB_NAME": "engagement",
+                "MONGO_DB_NAME": "mentor_hub",
                 
                 # JWT Configuration
                 "JWT_ALGORITHM": "HS256",
@@ -140,18 +136,14 @@ class Config:
                 "JWT_TTL_MINUTES": "480",
 
                 # Service Port numbers 
-                "COMMON_CODE_API_PORT": 8080,
-                "COMMON_CODE_SPA_PORT": 8081,
-                "MONGODB_API_PORT": 8180,
-                "MONGODB_SPA_PORT": 8181,
-                "RUNBOOK_API_PORT": 8182,
-                "RUNBOOK_SPA_PORT": 8183,
-                "TEMPLATE_API_PORT": 8184,
-                "TEMPLATE_SPA_PORT": 8185,
-                "DASHBOARD_API_PORT": 8190,
-                "DASHBOARD_SPA_PORT": 8191,
-                "CLASSIFIER_API_PORT": 8192,
-                "CLASSIFIER_SPA_PORT": 8193,
+                "RUNBOOK_API_PORT": 8383,
+                "RUNBOOK_SPA_PORT": 8384,
+                "MONGODB_API_PORT": 8385,
+                "MONGODB_SPA_PORT": 8386,
+                "COMMON_CODE_API_PORT": 8387,
+                "COMMON_CODE_SPA_PORT": 8388,
+                "TEMPLATE_API_PORT": 8389,
+                "TEMPLATE_SPA_PORT": 8390,
                 
             }
 
