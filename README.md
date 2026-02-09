@@ -1,4 +1,4 @@
-# Python API Utils Template
+# Python api_utils Merge Template
 
 ## Quick Start
 This is a template to create a custom api_utils for your system. To use this template, create a new repo using this template, then clone down your new repo, and your system specifications repo, and use the ``make merge`` command as shown below. 
@@ -6,7 +6,7 @@ This is a template to create a custom api_utils for your system. To use this tem
 ## Merge your specifications with the template
 make merge ../SystemRepo/Specifications
 ```
-and bob's your uncle, you have an Python API Utils repo ready to go, refresh you view of the README for more information, or just run ``pipenv install --dev`` to start working with your utils repo.
+and you have a working Python API Utils repo ready to go, refresh you view of the README for more information, or just run ``pipenv install --dev`` to start working with your utils repo.
 
 ## Contributing
 See [Template Guide](https://github.com/agile-learning-institute/stage0_runbook_merge/blob/main/TEMPLATE_GUIDE.md) for information about stage0 merge templates. See the [Processing Instructions](./.stage0_template/process.yaml) for details about this template, and [Test Specifications](./.stage0_template/Specifications/) for sample context data required.
