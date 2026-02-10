@@ -1,6 +1,6 @@
 $schema: "https://github.com/agile-learning-institute/stage0/blob/main/Schemas/product.schema.yaml"
-$id: "https://github.com/agile-learning-institute/mentorhub/blob/main/Specifications/product.yaml"
-title: Product and Organization Specifications for Mentor Hub
+$id: "https://github.com/agile-learning-institute/stage0_template_umbrella/blob/main/.stage0_template/Specifications/product.yaml"
+title: Product and Organization Specifications for template testing
 
 info:
   name: Mentor Hub
@@ -12,6 +12,7 @@ info:
 
 organization:
   name: Agile Learning Institute
+  email: info@agile-learning-institute.com
   founded: 2024
   slug: agile-learning-institute
   git_host: https://github.com
