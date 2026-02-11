@@ -17,13 +17,13 @@ info:
     
     ```bash
     # Get a development token
-    TOKEN=$(curl -s -X POST http://localhost:8387/dev-login \
+    TOKEN=$(curl -s -X POST http://localhost:{{info.base_port + 4}}/dev-login \
       -H "Content-Type: application/json" \
       -d '{"subject": "test-user", "roles": ["developer"]}' | \
       jq -r '.access_token')
     
     # Use the token
-    curl -H "Authorization: Bearer $TOKEN" http://localhost:8387/api/config
+    curl -H "Authorization: Bearer $TOKEN" http://localhost:{{info.base_port + 4}}/api/config
     ```
     
     **Note:** The `/dev-login` endpoint is only available when `ENABLE_LOGIN=true`.
@@ -34,18 +34,18 @@ info:
     **CRITICAL:** `JWT_SECRET` must be explicitly set before using api_utils.
     The application will fail to start if `JWT_SECRET` is not configured.
     
-    See the [SECURITY.md](https://github.com/agile-crafts-people/api_utils/blob/main/SECURITY.md) 
+    See the [SECURITY.md]({{org.git_host}}/{{org.git_org}}/{{info.slug}}_api_utils/blob/main/SECURITY.md) 
     for complete security documentation.
     
   version: 1.0.0
   contact:
     name: Agile Learning Institute
-    url: https://github.com/agile-learning-institute/mentorhub/api_utils
+    url: {{org.git_host}}/{{org.git_org}}/{{info.slug}}_api_utils
   license:
     name: MIT
 
 servers:
-  - url: http://localhost:8387
+  - url: http://localhost:{{info.base_port + 4}}
     description: Local development server (default)
 
 tags:

@@ -34,13 +34,13 @@ info:
     **CRITICAL:** `JWT_SECRET` must be explicitly set before using api_utils.
     The application will fail to start if `JWT_SECRET` is not configured.
     
-    See the [SECURITY.md](https://github.com/agile-crafts-people/api_utils/blob/main/SECURITY.md) 
+    See the [SECURITY.md](https://github.com/agile-learning-institute/mentorhub_api_utils/blob/main/SECURITY.md) 
     for complete security documentation.
     
   version: 1.0.0
   contact:
     name: Agile Learning Institute
-    url: https://github.com/agile-learning-institute/mentorhub/api_utils
+    url: https://github.com/agile-learning-institute/mentorhub_api_utils
   license:
     name: MIT
 

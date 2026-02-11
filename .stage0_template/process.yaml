@@ -35,6 +35,8 @@ templates:
   - path: "./README.md.template"
     output: "./README.md"
     merge: true
+  - path: "./docs/openapi.yaml"
+    merge: true
   - path: "./Makefile"
     output: "/dev/null"
     merge: true
