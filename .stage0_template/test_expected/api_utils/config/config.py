@@ -105,8 +105,8 @@ class Config:
             self.MONGODB_SPA_PORT = 0
             self.COMMON_CODE_API_PORT = 0
             self.COMMON_CODE_SPA_PORT = 0
-            self.TEMPLATE_API_PORT = 0
-            self.TEMPLATE_SPA_PORT = 0
+            self.SAMPLE_API_PORT = 0
+            self.SAMPLE_SPA_PORT = 0
 
 
             # Default Values grouped by value type            
@@ -142,8 +142,8 @@ class Config:
                 "MONGODB_SPA_PORT": 8386,
                 "COMMON_CODE_API_PORT": 8387,
                 "COMMON_CODE_SPA_PORT": 8388,
-                "TEMPLATE_API_PORT": 8389,
-                "TEMPLATE_SPA_PORT": 8390,
+                "SAMPLE_API_PORT": 8389,
+                "SAMPLE_SPA_PORT": 8390,
                 
             }
 
