@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "api_utils"
 version = "0.1.0"
-description = "A utility package for Creator Dashboard microservices"
+description = "A utility package for Mentor Hub microservices"
 authors = [{name = "Mike Storey", email = "devs@agile-learning.institute"}]
 license = "Apache-2.0"
 readme = "README.md"
@@ -35,4 +35,3 @@ norecursedirs = []
 markers = [
     "e2e: marks tests as end-to-end tests (deselect with '-m \"not e2e\"')"
 ]
-

@@ -40,6 +40,8 @@ templates:
     merge: true
   - path: "./Pipfile"
     merge: true
+  - path: "./pyproject.toml"
+    merge: true
   - path: "./api_utils/config/config.py"
     merge: true
   - path: "./tests/test_server.py"

@@ -2,8 +2,7 @@
 Infinite scroll (cursor-based pagination) utilities for MongoDB.
 
 Provides reusable logic for list endpoints with server-side pagination,
-sorting, and minimal name search. Used by template_flask_mongo and other
-Creator Dashboard APIs.
+sorting, and minimal name search.
 
 Raises:
     HTTPBadRequest: If invalid parameters (limit, sort_by, order, after_id).
