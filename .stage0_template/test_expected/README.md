@@ -25,7 +25,7 @@ export JWT_SECRET=$(openssl rand -base64 32)
 
 ```bash
 ## Install dependencies
-pipenv install
+pipenv install --dev
 
 # start backing db container (required for MongoIO unit/integration tests)
 pipenv run db
