@@ -25,6 +25,7 @@ e2e = "sh -c 'PYTHONPATH=. pytest tests/ -m e2e -v'"
 lint = "black --check api_utils tests"
 format = "black api_utils tests"
 db = "mh up mongodb"
+build-publish = "sh -c 'pipenv install && pipenv run build'"
 
 [requires]
 python_version = "3.12"
