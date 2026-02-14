@@ -25,7 +25,7 @@ architecture:
           template: N/A
           type: spa_ref
           port: 8384
-    - name: mongodb
+    - name: schema
       description: MongoDB Database Configuration and Management.
       repos:
         - name: mongodb_api
