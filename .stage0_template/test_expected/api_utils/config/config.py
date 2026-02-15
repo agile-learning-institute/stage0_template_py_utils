@@ -101,8 +101,8 @@ class Config:
             # Service Port numbers
             self.RUNBOOK_API_PORT = 0
             self.RUNBOOK_SPA_PORT = 0
-            self.MONGODB_API_PORT = 0
-            self.MONGODB_SPA_PORT = 0
+            self.SCHEMA_API_PORT = 0
+            self.SCHEMA_SPA_PORT = 0
             self.COMMON_CODE_API_PORT = 0
             self.COMMON_CODE_SPA_PORT = 0
             self.SAMPLE_API_PORT = 0
@@ -138,8 +138,8 @@ class Config:
                 # Service Port numbers 
                 "RUNBOOK_API_PORT": 8383,
                 "RUNBOOK_SPA_PORT": 8384,
-                "MONGODB_API_PORT": 8385,
-                "MONGODB_SPA_PORT": 8386,
+                "SCHEMA_API_PORT": 8385,
+                "SCHEMA_SPA_PORT": 8386,
                 "COMMON_CODE_API_PORT": 8387,
                 "COMMON_CODE_SPA_PORT": 8388,
                 "SAMPLE_API_PORT": 8389,
