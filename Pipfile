@@ -24,7 +24,7 @@ test = "sh -c 'PYTHONPATH=. pytest tests/ -v -m \"not e2e\"'"
 e2e = "sh -c 'PYTHONPATH=. pytest tests/ -m e2e -v'"
 lint = "black --check api_utils tests"
 format = "black api_utils tests"
-db = "mh up mongodb"
+db = "{{info.developer_cli}} up mongodb"
 build-publish = "sh -c 'pipenv install --dev && pipenv run build'"
 
 [requires]
