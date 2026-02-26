@@ -26,6 +26,9 @@ lint = "black --check api_utils tests"
 format = "black api_utils tests"
 db = "{{info.developer_cli}} up mongodb"
 build-publish = "sh -c 'pipenv install --dev && pipenv run build'"
+build-package = "sh -c 'pipenv install --dev && pipenv run build'"
+publish-package = "sh -c 'echo publish-package: no-op for api_utils'"
+delete-package = "sh -c 'echo delete-package: no-op for api_utils'"
 
 [requires]
 python_version = "3.12"
