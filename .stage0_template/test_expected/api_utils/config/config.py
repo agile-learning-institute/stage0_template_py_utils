@@ -99,8 +99,6 @@ class Config:
             self.PROFILE_COLLECTION_NAME = ''
 
             # Service Port numbers
-            self.RUNBOOK_API_PORT = 0
-            self.RUNBOOK_SPA_PORT = 0
             self.SCHEMA_API_PORT = 0
             self.SCHEMA_SPA_PORT = 0
             self.COMMON_CODE_API_PORT = 0
@@ -136,14 +134,12 @@ class Config:
                 "JWT_TTL_MINUTES": "480",
 
                 # Service Port numbers 
-                "RUNBOOK_API_PORT": 8383,
-                "RUNBOOK_SPA_PORT": 8384,
-                "SCHEMA_API_PORT": 8385,
-                "SCHEMA_SPA_PORT": 8386,
-                "COMMON_CODE_API_PORT": 8387,
-                "COMMON_CODE_SPA_PORT": 8388,
-                "SAMPLE_API_PORT": 8389,
-                "SAMPLE_SPA_PORT": 8390,
+                "SCHEMA_API_PORT": 8383,
+                "SCHEMA_SPA_PORT": 8384,
+                "COMMON_CODE_API_PORT": 8385,
+                "COMMON_CODE_SPA_PORT": 8386,
+                "SAMPLE_API_PORT": 8387,
+                "SAMPLE_SPA_PORT": 8388,
                 
             }
 
