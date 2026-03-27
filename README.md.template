@@ -1,6 +1,6 @@
-# api_utils
+# {{ info.name }} — shared API utilities
 
-This repo builds and publishes a shared PyPI library used across the [{{info.name}}]({{org.git_host}}/{{org.git_org}}/{{info.slug}}) system.
+This repo builds and publishes the **`{{ info.slug }}_api_utils`** PyPI library used across the [{{ info.name }}]({{ org.git_host }}/{{ org.git_org }}/{{ info.slug }}) system.
 
 ## ⚠️ Security Requirements
 

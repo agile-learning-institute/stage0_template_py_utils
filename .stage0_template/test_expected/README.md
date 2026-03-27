@@ -1,6 +1,6 @@
-# api_utils
+# Mentor Hub — shared API utilities
 
-This repo builds and publishes a shared PyPI library used across the [Mentor Hub](https://github.com/agile-learning-institute/mentorhub) system.
+This repo builds and publishes the **`mentorhub_api_utils`** PyPI library used across the [Mentor Hub](https://github.com/agile-learning-institute/mentorhub) system.
 
 ## ⚠️ Security Requirements
 
