@@ -7,7 +7,6 @@ The api_utils package implements several security measures to protect applicatio
 ### Authentication and Authorization
 - **JWT-based authentication** - Token class validates JWT tokens with signature verification
 - **Token validation** - JWT tokens are validated for signature, expiration, issuer, and audience
-- **Dev-login protection** - The `/dev-login` endpoint is disabled by default and must be explicitly enabled
 - **Fail-fast security** - The application will not start if JWT_SECRET is not explicitly configured
 
 ### Input Validation
@@ -45,31 +44,21 @@ export JWT_AUDIENCE="your-api-identifier"
 export JWT_TTL_MINUTES=60  # Adjust based on your requirements
 ```
 
-### 2. Disable Development Features
-
-**MUST** set `ENABLE_LOGIN=false` (or omit it, as false is default) to disable `/dev-login` endpoint:
-
-```bash
-export ENABLE_LOGIN=false
-```
-
-**NEVER** enable dev-login in production - it allows anyone to generate tokens with arbitrary roles.
-
-### 3. Network Security
+### 2. Network Security
 
 - **MUST** use HTTPS/TLS in production (configure via reverse proxy or load balancer)
 - **SHOULD** restrict network access to API servers
 - **SHOULD** use a reverse proxy (nginx, Traefik, etc.) for additional security layers
 - **SHOULD** configure CORS policies appropriate for your deployment
 
-### 4. MongoDB Security (if using MongoIO)
+### 3. MongoDB Security (if using MongoIO)
 
 - **MUST** use authentication for MongoDB connections
 - **MUST** use encrypted connections (TLS/SSL) for MongoDB
 - **SHOULD** limit MongoDB user privileges to minimum required
 - **SHOULD** use network isolation for MongoDB instances
 
-### 5. Container Security (if deploying in containers)
+### 4. Container Security (if deploying in containers)
 
 - **SHOULD** run containers as non-root user
 - **SHOULD** use read-only file systems where possible
@@ -77,7 +66,7 @@ export ENABLE_LOGIN=false
 - **SHOULD** scan container images for vulnerabilities
 - **SHOULD** use secrets management for JWT_SECRET and connection strings
 
-### 6. Monitoring and Logging
+### 5. Monitoring and Logging
 
 - **SHOULD** monitor for failed authentication attempts
 - **SHOULD** log all authentication and authorization events
@@ -94,15 +83,6 @@ export ENABLE_LOGIN=false
 - The fail-fast validation ensures production deployments always have `JWT_SECRET` configured
 
 **Production requirement:** Always configure `JWT_SECRET` to enable proper signature verification.
-
-### Development Mode Security
-
-When `ENABLE_LOGIN=true`:
-- The `/dev-login` endpoint allows **anyone** to generate tokens with **arbitrary roles**
-- CORS is set to allow all origins (`Access-Control-Allow-Origin: *`)
-- No actual authentication is performed
-
-**NEVER enable development mode in production!**
 
 ### Secret Management
 
@@ -218,7 +198,6 @@ Use this checklist before deploying to production:
 
 - [ ] JWT_SECRET is set to a strong, randomly generated value
 - [ ] JWT_ISSUER and JWT_AUDIENCE are configured for your environment
-- [ ] ENABLE_LOGIN is set to false (or not set)
 - [ ] HTTPS/TLS is configured and enforced
 - [ ] MongoDB uses authentication and encrypted connections
 - [ ] Network access is restricted appropriately

@@ -73,7 +73,6 @@ class Config:
             self.BUILT_AT = ''
             self.CONFIG_FOLDER = ''
             self.LOGGING_LEVEL = ''
-            self.ENABLE_LOGIN = False
 
             # JWT Configuration
             self.JWT_SECRET = ''
@@ -144,8 +143,7 @@ class Config:
             }
 
             self.config_booleans = {
-                "ENABLE_LOGIN": "false"
-            }            
+            }
 
             self.config_json_defaults = {
             }            

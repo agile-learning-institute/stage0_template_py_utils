@@ -50,19 +50,16 @@ app.json = MongoJSONEncoder(app)
 from api_utils import (
     create_metric_routes,
     create_explorer_routes,
-    create_dev_login_routes,
     create_config_routes
 )
 
 # Register route blueprints
 app.register_blueprint(create_explorer_routes(), url_prefix='/docs')
-app.register_blueprint(create_dev_login_routes(), url_prefix='/dev-login')
 app.register_blueprint(create_config_routes(), url_prefix='/api/config')
 metrics = create_metric_routes(app) # This exposes /metrics endpoint
 
 logger.info("============= Routes Registered ===============")
 logger.info("  /docs/<path> - API Explorer")
-logger.info("  /dev-login - Dev Login (returns 404 if disabled)")
 logger.info("  /api/config - Configuration endpoint")
 logger.info("  /metrics - Prometheus metrics endpoint")
 

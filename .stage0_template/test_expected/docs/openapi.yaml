@@ -11,23 +11,19 @@ info:
     - JWT authentication and token validation
     - Prometheus metrics endpoint
     
+    JWTs are issued by your identity provider (or the Developer Edition welcome flow), not by
+    this demo server. This OpenAPI documents the **library demo server** (`/api/config`, `/metrics`,
+    `/docs`).
+    
     ## Authentication
     
-    Most endpoints require JWT authentication. For development, use the `/dev-login` endpoint to obtain a token:
+    Protected endpoints require a Bearer JWT that validates against `JWT_SECRET`, `JWT_ISSUER`,
+    and `JWT_AUDIENCE`. For local black-box tests, use a token signed with the same secret as
+    `pipenv run dev` (see repository `tests/e2e_auth.py`).
     
     ```bash
-    # Get a development token
-    TOKEN=$(curl -s -X POST http://localhost:8387/dev-login \
-      -H "Content-Type: application/json" \
-      -d '{"subject": "test-user", "roles": ["developer"]}' | \
-      jq -r '.access_token')
-    
-    # Use the token
-    curl -H "Authorization: Bearer $TOKEN" http://localhost:8387/api/config
+    curl -H "Authorization: Bearer $TOKEN" http://localhost:8385/api/config
     ```
-    
-    **Note:** The `/dev-login` endpoint is only available when `ENABLE_LOGIN=true`.
-    Never enable this in production environments.
     
     ## Security Requirements
     
@@ -45,97 +41,16 @@ info:
     name: MIT
 
 servers:
-  - url: http://localhost:8387
+  - url: http://localhost:8385
     description: Local development server (default)
 
 tags:
-  - name: Authentication
-    description: Development authentication endpoints
   - name: Configuration
     description: Runtime configuration endpoints
   - name: Monitoring
     description: Prometheus metrics and health endpoints
 
 paths:
-  /dev-login:
-    post:
-      tags:
-        - Authentication
-      summary: Get development JWT token
-      description: |
-        Issue a signed JWT token for development and testing.
-        
-        **Security Warning:** This endpoint is only enabled when `ENABLE_LOGIN=true`.
-        Never enable this endpoint in production environments as it allows anyone to
-        generate tokens with arbitrary roles.
-        
-        When disabled, this endpoint returns 404 (not 403) to hide its existence.
-      operationId: devLogin
-      requestBody:
-        description: Token request with optional subject and roles
-        required: false
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/DevLoginRequest'
-            examples:
-              default:
-                summary: Default values
-                value: {}
-              custom:
-                summary: Custom subject and roles
-                value:
-                  subject: "test-user-123"
-                  roles: ["developer", "admin"]
-      responses:
-        '200':
-          description: JWT token generated successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DevLoginResponse'
-        '403':
-          description: Error generating token
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '404':
-          description: Dev-login endpoint is disabled
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-      x-code-samples:
-        - lang: curl
-          source: |
-            curl -X POST "http://localhost:8387/dev-login" \
-              -H "Content-Type: application/json" \
-              -d '{"subject": "test-user", "roles": ["developer"]}'
-    
-    options:
-      tags:
-        - Authentication
-      summary: CORS preflight for dev-login
-      description: Handle CORS preflight requests for the dev-login endpoint
-      operationId: devLoginOptions
-      responses:
-        '200':
-          description: CORS headers returned
-          headers:
-            Access-Control-Allow-Origin:
-              schema:
-                type: string
-                example: "*"
-            Access-Control-Allow-Methods:
-              schema:
-                type: string
-                example: "POST, OPTIONS"
-            Access-Control-Allow-Headers:
-              schema:
-                type: string
-                example: "Content-Type, Authorization"
-
   /api/config:
     get:
       tags:
@@ -174,13 +89,7 @@ paths:
       x-code-samples:
         - lang: curl
           source: |
-            # First get a token
-            TOKEN=$(curl -s -X POST http://localhost:8387/dev-login \
-              -H "Content-Type: application/json" \
-              -d '{}' | jq -r '.access_token')
-            
-            # Then get config
-            curl -X GET "http://localhost:8387/api/config" \
+            curl -X GET "http://localhost:8385/api/config" \
               -H "Authorization: Bearer $TOKEN"
 
   /metrics:
@@ -213,7 +122,7 @@ paths:
       x-code-samples:
         - lang: curl
           source: |
-            curl -X GET "http://localhost:8387/metrics"
+            curl -X GET "http://localhost:8385/metrics"
 
   /docs/{filename}:
     get:
@@ -249,7 +158,7 @@ paths:
         - lang: curl
           source: |
             # Access the API explorer
-            curl -X GET "http://localhost:8387/docs/explorer.html"
+            curl -X GET "http://localhost:8385/docs/explorer.html"
 
 components:
   securitySchemes:
@@ -258,60 +167,10 @@ components:
       scheme: bearer
       bearerFormat: JWT
       description: |
-        JWT authentication. Obtain a token from `/dev-login` endpoint (development only).
-        
-        In production, tokens should be issued by your identity provider.
+        JWT authentication. Tokens must be issued by your identity provider and match
+        configured issuer, audience, and signing secret.
 
   schemas:
-    DevLoginRequest:
-      type: object
-      properties:
-        subject:
-          type: string
-          description: Subject (user ID) for the token
-          default: "dev-user-1"
-          example: "test-user-123"
-        roles:
-          type: array
-          items:
-            type: string
-          description: List of roles to include in the token
-          default: ["developer"]
-          example: ["developer", "admin"]
-    
-    DevLoginResponse:
-      type: object
-      required:
-        - access_token
-        - token_type
-        - expires_at
-        - subject
-        - roles
-      properties:
-        access_token:
-          type: string
-          description: JWT access token
-          example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
-        token_type:
-          type: string
-          description: Token type (always "bearer")
-          example: "bearer"
-        expires_at:
-          type: string
-          format: date-time
-          description: Token expiration timestamp (ISO 8601)
-          example: "2026-01-20T12:00:00+00:00"
-        subject:
-          type: string
-          description: Subject (user ID) from the token
-          example: "test-user-123"
-        roles:
-          type: array
-          items:
-            type: string
-          description: Roles included in the token
-          example: ["developer", "admin"]
-    
     ConfigResponse:
       type: object
       required:

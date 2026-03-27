@@ -33,11 +33,11 @@ pipenv run db
 ## run unit tests (includes MongoIO Integration Tests)
 pipenv run test
 
-## run demo dev server - captures command line, serves API at localhost:{{info.base_port + 4}}
-## Note: ENABLE_LOGIN=true is automatically set by the dev script
+## run demo dev server - captures command line, serves API at localhost:{{info.base_port + 2}}
+## Note: dev uses a fixed JWT_SECRET for local E2E; see tests/e2e_auth.py
 pipenv run dev
 
-## run E2E tests (assumes running API at localhost:{{info.base_port + 4}})
+## run E2E tests (assumes running API at localhost:{{info.base_port + 2}})
 pipenv run e2e
 
 ## build package for deployment
@@ -56,9 +56,15 @@ pipenv run lint
   - `config/` - Configuration singleton with support for file, environment, and default values
   - `flask_utils/` - Flask-specific utilities (JSON encoder, token, breadcrumb)
   - `mongo_utils/` - MongoDB utilities (MongoIO singleton, document encoding, infinite scroll)
-  - `routes/` - Flask route blueprints with factory functions (config, dev-login, metrics, explorer)
+  - `routes/` - Flask route blueprints with factory functions (config, metrics, explorer)
 
 - `tests/` - Test suite for all components
+
+## Domain APIs vs. this library
+
+**Developer Edition:** Domain APIs and this library use JWTs from the welcome page / IdP, not an API-hosted dev-login. See [API Standards]({{org.git_host}}/{{org.git_org}}/{{info.slug}}/blob/main/DeveloperEdition/standards/api_standards.md).
+
+The packaged **demo server** (`api_utils/server.py`) documents config and metrics only; obtain Bearer tokens from your IdP (or the static test token in `tests/e2e_auth.py` for black-box runs).
 
 ## Demo Server
 
@@ -68,15 +74,15 @@ See [server.py](./api_utils/server.py) for sample implementation details.
 ### Starting the Server
 
 ```bash
-# Start the demo server (ENABLE_LOGIN=true is set automatically)
+# Start the demo server (JWT_SECRET matches tests/e2e_auth.py)
 pipenv run dev
 
-# Server will be available at http://localhost:{{info.base_port + 4}}
+# Server will be available at http://localhost:{{info.base_port + 2}}
 ```
 
 ### API Explorer
 
-Visit **http://localhost:{{info.base_port + 4}}/docs/explorer.html** for an interactive API explorer with:
+Visit **http://localhost:{{info.base_port + 2}}/docs/explorer.html** for an interactive API explorer with:
 - Complete endpoint documentation
 - Try-it-out functionality for testing
 - Request/response examples
@@ -86,24 +92,18 @@ Visit **http://localhost:{{info.base_port + 4}}/docs/explorer.html** for an inte
 
 - `/docs/explorer.html` - Interactive API Explorer (Swagger UI)
 - `/docs/openapi.yaml` - OpenAPI specification
-- `/dev-login` - Development JWT token issuance (returns 404 if `ENABLE_LOGIN=false`)
 - `/api/config` - Configuration endpoint (requires valid JWT token)
 - `/metrics` - Prometheus metrics endpoint
 
 ### Quick curl Examples
 
 ```bash
-# Get a development token
-TOKEN=$(curl -s -X POST http://localhost:{{info.base_port + 4}}/dev-login \
-  -H "Content-Type: application/json" \
-  -d '{"subject": "user-123", "roles": ["admin"]}' | jq -r '.access_token')
-
-# Get configuration
-curl http://localhost:{{info.base_port + 4}}/api/config \
+# Get configuration (use a JWT from your IdP, or the token in tests/e2e_auth.py for local E2E)
+curl http://localhost:{{info.base_port + 2}}/api/config \
   -H "Authorization: Bearer $TOKEN"
 
 # Get Prometheus metrics
-curl http://localhost:{{info.base_port + 4}}/metrics
+curl http://localhost:{{info.base_port + 2}}/metrics
 ```
 
 ### What the Server Demonstrates
@@ -148,13 +148,10 @@ api_utils implements security best practices including:
 - **JWT signature verification** - Tokens are validated with proper signature verification when `JWT_SECRET` is configured
 - **Fail-fast validation** - Application will not start if `JWT_SECRET` uses the default insecure value
 - **Secret masking** - Configuration secrets are masked in logs and API responses
-- **Development mode protection** - `/dev-login` endpoint is disabled by default
-
 ### Production Security Checklist
 
 Before deploying to production, ensure:
 - [ ] `JWT_SECRET` is set to a strong, randomly generated value
-- [ ] `ENABLE_LOGIN` is set to `false` (default)
 - [ ] MongoDB connection uses authentication and encryption
 - [ ] HTTPS/TLS is configured
 - [ ] Monitoring and logging are enabled

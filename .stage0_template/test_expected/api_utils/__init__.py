@@ -8,7 +8,6 @@ from .flask_utils.ejson_encoder import MongoJSONEncoder
 from .mongo_utils.mongo_io import MongoIO
 from .mongo_utils.encode_properties import encode_document
 from .routes.config_routes import create_config_routes
-from .routes.dev_login_routes import create_dev_login_routes
 from .routes.metric_routes import create_metric_routes
 from .routes.explorer_routes import create_explorer_routes
 
@@ -34,7 +33,6 @@ __all__ = [
     
     # Route Blueprints
     create_config_routes,
-    create_dev_login_routes,
     create_metric_routes,
     create_explorer_routes,
     
