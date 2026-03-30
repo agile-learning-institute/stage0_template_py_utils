@@ -205,13 +205,3 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
-
-# Stage0 templates: dependency lockfiles are not part of the template (generate in consumer repos).
-Pipfile.lock
-package-lock.json
-yarn.lock
-pnpm-lock.yaml
-poetry.lock
-pdm.lock
-uv.lock
-
