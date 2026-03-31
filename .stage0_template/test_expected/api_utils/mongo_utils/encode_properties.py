@@ -5,8 +5,8 @@ def encode_document(document, id_properties, date_properties):
     """Encode ObjectId and datetime values for MongoDB in place.
 
     This function traverses the given document recursively, modifying it in place.
-    It encodes specified fields into MongoDB-compatible formats: `ObjectId` for
-    `id_properties` and `datetime` for `date_properties`.
+    It encodes specified fields for MongoDB: ``ObjectId`` for ``id_properties``
+    and ``datetime`` for ``date_properties``.
 
     Args:
         document (dict): The document to encode. This is modified in place.

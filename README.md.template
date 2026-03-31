@@ -62,7 +62,7 @@ pipenv run lint
 
 ## Domain APIs vs. this library
 
-**Developer Edition:** Domain APIs and this library use JWTs from the welcome page / IdP, not an API-hosted dev-login. See [API Standards]({{org.git_host}}/{{org.git_org}}/{{info.slug}}/blob/main/DeveloperEdition/standards/api_standards.md).
+**Developer Edition:** Domain APIs and this library **validate** JWTs issued by the welcome page / IdP; they do not expose HTTP endpoints that mint credentials. See [API Standards]({{org.git_host}}/{{org.git_org}}/{{info.slug}}/blob/main/DeveloperEdition/standards/api_standards.md).
 
 The packaged **demo server** (`api_utils/server.py`) documents config and metrics only; obtain Bearer tokens from your IdP (or the static test token in `tests/e2e_auth.py` for black-box runs).
 

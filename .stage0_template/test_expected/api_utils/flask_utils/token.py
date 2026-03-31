@@ -1,12 +1,11 @@
 """
 Token utilities for Flask requests.
 
-Provides Token class that extracts and validates JWT tokens from request headers,
-and a helper function for backward compatibility.
+Provides :class:`Token` to extract and validate JWTs from ``Authorization`` headers,
+and :func:`create_flask_token` to return the minimal claim shape used by routes.
 """
 from flask import request
 import jwt
-from datetime import datetime, timezone
 from api_utils.flask_utils.exceptions import HTTPUnauthorized
 from api_utils.config.config import Config
 
@@ -43,7 +42,7 @@ class Token:
             request_obj: Flask request object (defaults to flask.request)
             
         Raises:
-            HTTPUnauthorized: If token is missing, invalid, or expired
+            HTTPUnauthorized: If token is missing, invalid, expired, or JWT_SECRET is unset
         """
         if request_obj is None:
             request_obj = request
@@ -64,33 +63,20 @@ class Token:
             logger.warning("Empty token in Authorization header")
             raise HTTPUnauthorized("Empty token in Authorization header")
         
-        # Decode and validate token
+        # Decode and validate token (require configured secret; apis do not mint tokens)
         try:
             config = Config.get_instance()
             try:
-                if config.JWT_SECRET:
-                    # Verify signature with the configured secret
-                    self.claims = jwt.decode(
-                        token_string,
-                        config.JWT_SECRET,
-                        algorithms=[config.JWT_ALGORITHM],
-                        audience=config.JWT_AUDIENCE,
-                        issuer=config.JWT_ISSUER,
-                    )
-                else:
-                    # No secret configured: decode without signature verification (development only)
-                    self.claims = jwt.decode(
-                        token_string,
-                        options={"verify_signature": False}
-                    )
-                    
-                    if 'exp' in self.claims:
-                        exp_timestamp = self.claims['exp']
-                        current_timestamp = int(datetime.now(timezone.utc).timestamp())
-                        if current_timestamp >= exp_timestamp:
-                            logger.warning("Token has expired")
-                            raise HTTPUnauthorized("Token has expired")
-                
+                if not config.JWT_SECRET:
+                    logger.error("JWT_SECRET is not configured")
+                    raise HTTPUnauthorized("JWT_SECRET is not configured")
+                self.claims = jwt.decode(
+                    token_string,
+                    config.JWT_SECRET,
+                    algorithms=[config.JWT_ALGORITHM],
+                    audience=config.JWT_AUDIENCE,
+                    issuer=config.JWT_ISSUER,
+                )
             except jwt.ExpiredSignatureError:
                 logger.warning("Token has expired")
                 raise HTTPUnauthorized("Token has expired")
@@ -113,7 +99,7 @@ class Token:
         Maps standard JWT claims (sub, email, roles, etc.) to the format
         expected by the rest of the application.
         """
-        # Map 'sub' claim to 'user_id' for backward compatibility
+        # Expose ``sub`` as ``user_id`` for application code
         if 'sub' in self.claims:
             self.claims['user_id'] = self.claims['sub']
         
@@ -143,10 +129,7 @@ class Token:
 
 def create_flask_token():
     """
-    Create a token dictionary from the JWT in the request.
-    
-    This is a backward-compatible function that creates a Token instance
-    and returns its dictionary representation.
+    Build the minimal token dict from the JWT on the current request.
     
     Returns:
         dict: Token information with user_id and roles

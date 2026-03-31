@@ -22,7 +22,7 @@ info:
     `pipenv run dev` (see repository `tests/e2e_auth.py`).
     
     ```bash
-    curl -H "Authorization: Bearer $TOKEN" http://localhost:{{info.base_port + 2}}/api/config
+    curl -H "Authorization: Bearer $TOKEN" http://localhost:8385/api/config
     ```
     
     ## Security Requirements
@@ -30,18 +30,18 @@ info:
     **CRITICAL:** `JWT_SECRET` must be explicitly set before using api_utils.
     The application will fail to start if `JWT_SECRET` is not configured.
     
-    See the [SECURITY.md]({{org.git_host}}/{{org.git_org}}/{{info.slug}}_api_utils/blob/main/SECURITY.md) 
+    See the [SECURITY.md](https://github.com/mentor-hub-system/mentorhub_api_utils/blob/main/SECURITY.md) 
     for complete security documentation.
     
   version: 1.0.0
   contact:
     name: Agile Learning Institute
-    url: {{org.git_host}}/{{org.git_org}}/{{info.slug}}_api_utils
+    url: https://github.com/mentor-hub-system/mentorhub_api_utils
   license:
     name: MIT
 
 servers:
-  - url: http://localhost:{{info.base_port + 2}}
+  - url: http://localhost:8385
     description: Local development server (default)
 
 tags:
@@ -89,7 +89,7 @@ paths:
       x-code-samples:
         - lang: curl
           source: |
-            curl -X GET "http://localhost:{{info.base_port + 2}}/api/config" \
+            curl -X GET "http://localhost:8385/api/config" \
               -H "Authorization: Bearer $TOKEN"
 
   /metrics:
@@ -98,7 +98,7 @@ paths:
         - Monitoring
       summary: Prometheus metrics endpoint
       description: |
-        Prometheus-compatible metrics endpoint for monitoring.
+        Metrics in Prometheus text exposition format.
         
         This endpoint is automatically exposed by the `create_metric_routes()` function
         and provides metrics about:
@@ -122,7 +122,7 @@ paths:
       x-code-samples:
         - lang: curl
           source: |
-            curl -X GET "http://localhost:{{info.base_port + 2}}/metrics"
+            curl -X GET "http://localhost:8385/metrics"
 
   /docs/{filename}:
     get:
@@ -158,7 +158,7 @@ paths:
         - lang: curl
           source: |
             # Access the API explorer
-            curl -X GET "http://localhost:{{info.base_port + 2}}/docs/explorer.html"
+            curl -X GET "http://localhost:8385/docs/explorer.html"
 
 components:
   securitySchemes:

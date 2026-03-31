@@ -5,17 +5,23 @@ These tests verify that the server endpoints work correctly by making
 actual HTTP requests to a running server at localhost:8385 (COMMON_CODE_API_PORT).
 """
 import pytest
-import requests
 
 from tests.e2e_auth import get_auth_token
 
 BASE_URL = "http://localhost:8385"
 
 
+def _requests():
+    """Import lazily so `pytest -m "not e2e"` collection does not require dev-only `requests`."""
+    import requests
+
+    return requests
+
+
 @pytest.mark.e2e
 def test_config_endpoint_returns_401_without_token():
     """Test that /api/config endpoint returns 401 without authentication."""
-    response = requests.get(f"{BASE_URL}/api/config")
+    response = _requests().get(f"{BASE_URL}/api/config")
     assert response.status_code == 401, f"Expected 401, got {response.status_code}"
 
 
@@ -24,7 +30,7 @@ def test_config_endpoint_returns_200_with_token():
     """Test that /api/config endpoint returns 200 with valid token."""
     token = get_auth_token()
     headers = {"Authorization": f"Bearer {token}"}
-    response = requests.get(f"{BASE_URL}/api/config", headers=headers)
+    response = _requests().get(f"{BASE_URL}/api/config", headers=headers)
     assert response.status_code == 200, f"Expected 200, got {response.status_code}"
 
 
@@ -33,7 +39,7 @@ def test_config_endpoint_returns_expected_structure():
     """Test that /api/config endpoint returns expected JSON structure."""
     token = get_auth_token()
     headers = {"Authorization": f"Bearer {token}"}
-    response = requests.get(f"{BASE_URL}/api/config", headers=headers)
+    response = _requests().get(f"{BASE_URL}/api/config", headers=headers)
     assert response.status_code == 200
 
     data = response.json()
@@ -48,7 +54,7 @@ def test_config_endpoint_returns_config_items():
     """Test that /api/config endpoint returns configuration items."""
     token = get_auth_token()
     headers = {"Authorization": f"Bearer {token}"}
-    response = requests.get(f"{BASE_URL}/api/config", headers=headers)
+    response = _requests().get(f"{BASE_URL}/api/config", headers=headers)
     assert response.status_code == 200
 
     data = response.json()
@@ -59,14 +65,14 @@ def test_config_endpoint_returns_config_items():
 @pytest.mark.e2e
 def test_metrics_endpoint_returns_200():
     """Test that /metrics endpoint returns 200 status."""
-    response = requests.get(f"{BASE_URL}/metrics")
+    response = _requests().get(f"{BASE_URL}/metrics")
     assert response.status_code == 200, f"Expected 200, got {response.status_code}"
 
 
 @pytest.mark.e2e
 def test_metrics_endpoint_returns_prometheus_format():
     """Test that /metrics endpoint returns Prometheus-formatted metrics."""
-    response = requests.get(f"{BASE_URL}/metrics")
+    response = _requests().get(f"{BASE_URL}/metrics")
     assert response.status_code == 200
 
     content = response.text

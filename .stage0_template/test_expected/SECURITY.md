@@ -38,12 +38,6 @@ export JWT_ISSUER="your-identity-provider"
 export JWT_AUDIENCE="your-api-identifier"
 ```
 
-**MUST** use a secure token TTL appropriate for your security policy:
-
-```bash
-export JWT_TTL_MINUTES=60  # Adjust based on your requirements
-```
-
 ### 2. Network Security
 
 - **MUST** use HTTPS/TLS in production (configure via reverse proxy or load balancer)
@@ -78,11 +72,10 @@ export JWT_TTL_MINUTES=60  # Adjust based on your requirements
 ### JWT Signature Verification
 
 **Token class behavior:**
-- When `JWT_SECRET` is configured, tokens are verified with signature validation, issuer, and audience checks
-- When `JWT_SECRET` is not configured (development only), tokens are decoded without signature verification
-- The fail-fast validation ensures production deployments always have `JWT_SECRET` configured
+- Tokens are always verified with signature validation, issuer, and audience checks when `JWT_SECRET` is set
+- Startup fails if `JWT_SECRET` is left at the insecure default; requests are rejected if `JWT_SECRET` is missing at runtime
 
-**Production requirement:** Always configure `JWT_SECRET` to enable proper signature verification.
+**Production requirement:** Always configure `JWT_SECRET` with a strong secret from your secrets manager.
 
 ### Secret Management
 

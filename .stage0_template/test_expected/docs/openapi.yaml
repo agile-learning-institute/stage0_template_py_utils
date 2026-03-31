@@ -30,13 +30,13 @@ info:
     **CRITICAL:** `JWT_SECRET` must be explicitly set before using api_utils.
     The application will fail to start if `JWT_SECRET` is not configured.
     
-    See the [SECURITY.md](https://github.com/agile-learning-institute/mentorhub_api_utils/blob/main/SECURITY.md) 
+    See the [SECURITY.md](https://github.com/mentor-hub-system/mentorhub_api_utils/blob/main/SECURITY.md) 
     for complete security documentation.
     
   version: 1.0.0
   contact:
     name: Agile Learning Institute
-    url: https://github.com/agile-learning-institute/mentorhub_api_utils
+    url: https://github.com/mentor-hub-system/mentorhub_api_utils
   license:
     name: MIT
 
@@ -98,7 +98,7 @@ paths:
         - Monitoring
       summary: Prometheus metrics endpoint
       description: |
-        Prometheus-compatible metrics endpoint for monitoring.
+        Metrics in Prometheus text exposition format.
         
         This endpoint is automatically exposed by the `create_metric_routes()` function
         and provides metrics about:

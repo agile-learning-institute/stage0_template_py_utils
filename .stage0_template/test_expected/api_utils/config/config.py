@@ -79,7 +79,6 @@ class Config:
             self.JWT_ALGORITHM = ''
             self.JWT_ISSUER = ''
             self.JWT_AUDIENCE = ''
-            self.JWT_TTL_MINUTES = 0
     
             # MongoDB Backing Service Configuration
             self.MONGO_DB_NAME = ''
@@ -96,14 +95,27 @@ class Config:
             # Collection Names
             self.IDENTITY_COLLECTION_NAME = ''
             self.PROFILE_COLLECTION_NAME = ''
+            self.ORGANIZATION_COLLECTION_NAME = ''
+            self.EVENT_COLLECTION_NAME = ''
+            self.RESOURCE_COLLECTION_NAME = ''
+            self.PATH_COLLECTION_NAME = ''
+            self.PLAN_COLLECTION_NAME = ''
+            self.ENCOUNTER_COLLECTION_NAME = ''
+            self.CURRICULUM_COLLECTION_NAME = ''
+            self.RATING_COLLECTION_NAME = ''
+            self.REVIEW_COLLECTION_NAME = ''
 
             # Service Port numbers
             self.SCHEMA_API_PORT = 0
             self.SCHEMA_SPA_PORT = 0
             self.COMMON_CODE_API_PORT = 0
             self.COMMON_CODE_SPA_PORT = 0
-            self.SAMPLE_API_PORT = 0
-            self.SAMPLE_SPA_PORT = 0
+            self.PROFILE_API_PORT = 0
+            self.PROFILE_SPA_PORT = 0
+            self.MENTOR_API_PORT = 0
+            self.MENTOR_SPA_PORT = 0
+            self.MEMBER_API_PORT = 0
+            self.MEMBER_SPA_PORT = 0
 
 
             # Default Values grouped by value type            
@@ -127,18 +139,28 @@ class Config:
                 # Collection Names
                 "IDENTITY_COLLECTION_NAME": "Identity",
                 "PROFILE_COLLECTION_NAME": "Profile",
+                "ORGANIZATION_COLLECTION_NAME": "Organization",
+                "EVENT_COLLECTION_NAME": "Event",
+                "RESOURCE_COLLECTION_NAME": "Resource",
+                "PATH_COLLECTION_NAME": "Path",
+                "PLAN_COLLECTION_NAME": "Plan",
+                "ENCOUNTER_COLLECTION_NAME": "Encounter",
+                "CURRICULUM_COLLECTION_NAME": "Curriculum",
+                "RATING_COLLECTION_NAME": "Rating",
+                "REVIEW_COLLECTION_NAME": "Review",
             }
             self.config_ints = {
-                # JWT Configuration
-                "JWT_TTL_MINUTES": "480",
-
                 # Service Port numbers 
                 "SCHEMA_API_PORT": 8383,
                 "SCHEMA_SPA_PORT": 8384,
                 "COMMON_CODE_API_PORT": 8385,
                 "COMMON_CODE_SPA_PORT": 8386,
-                "SAMPLE_API_PORT": 8387,
-                "SAMPLE_SPA_PORT": 8388,
+                "PROFILE_API_PORT": 8387,
+                "PROFILE_SPA_PORT": 8388,
+                "MENTOR_API_PORT": 8389,
+                "MENTOR_SPA_PORT": 8390,
+                "MEMBER_API_PORT": 8391,
+                "MEMBER_SPA_PORT": 8392,
                 
             }
 

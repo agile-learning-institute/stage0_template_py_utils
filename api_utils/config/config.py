@@ -79,7 +79,6 @@ class Config:
             self.JWT_ALGORITHM = ''
             self.JWT_ISSUER = ''
             self.JWT_AUDIENCE = ''
-            self.JWT_TTL_MINUTES = 0
     
             # MongoDB Backing Service Configuration
             self.MONGO_DB_NAME = ''
@@ -94,22 +93,30 @@ class Config:
             self.VERSIONS_COLLECTION_NAME = ''
 
             # Collection Names
-{% for dictionary in dictionaries -%}
-{{ '            ' -}}
-self.{{ dictionary.name | upper }}_COLLECTION_NAME = ''
-{% endfor %}
+            self.IDENTITY_COLLECTION_NAME = ''
+            self.PROFILE_COLLECTION_NAME = ''
+            self.ORGANIZATION_COLLECTION_NAME = ''
+            self.EVENT_COLLECTION_NAME = ''
+            self.RESOURCE_COLLECTION_NAME = ''
+            self.PATH_COLLECTION_NAME = ''
+            self.PLAN_COLLECTION_NAME = ''
+            self.ENCOUNTER_COLLECTION_NAME = ''
+            self.CURRICULUM_COLLECTION_NAME = ''
+            self.RATING_COLLECTION_NAME = ''
+            self.REVIEW_COLLECTION_NAME = ''
+
             # Service Port numbers
-{% for domain in architecture.domains -%}
-{% for repo in domain.repos -%}
-{% if repo.type == 'api' -%}
-{{ '            ' -}}
-self.{{ domain.name | upper }}_API_PORT = 0
-{% elif repo.type == 'spa' or repo.type == 'spa_ref' -%}
-{{ '            ' -}}
-self.{{ domain.name | upper }}_SPA_PORT = 0
-{% endif -%}
-{% endfor -%}
-{% endfor %}
+            self.SCHEMA_API_PORT = 0
+            self.SCHEMA_SPA_PORT = 0
+            self.COMMON_CODE_API_PORT = 0
+            self.COMMON_CODE_SPA_PORT = 0
+            self.PROFILE_API_PORT = 0
+            self.PROFILE_SPA_PORT = 0
+            self.MENTOR_API_PORT = 0
+            self.MENTOR_SPA_PORT = 0
+            self.MEMBER_API_PORT = 0
+            self.MEMBER_SPA_PORT = 0
+
 
             # Default Values grouped by value type            
             self.config_strings = {
@@ -118,7 +125,7 @@ self.{{ domain.name | upper }}_SPA_PORT = 0
                 "INPUT_FOLDER": "/input",
                 "OUTPUT_FOLDER": "/output",
                 "LOGGING_LEVEL": "INFO", 
-                "MONGO_DB_NAME": "{{info.db_name}}",
+                "MONGO_DB_NAME": "mentor_hub",
                 
                 # JWT Configuration
                 "JWT_ALGORITHM": "HS256",
@@ -130,28 +137,31 @@ self.{{ domain.name | upper }}_SPA_PORT = 0
                 "VERSIONS_COLLECTION_NAME": "CollectionVersions",
                 
                 # Collection Names
-{% for dictionary in dictionaries -%}
-{{ '                ' -}}
-"{{ dictionary.name | upper }}_COLLECTION_NAME": "{{ dictionary.name }}",
-{% endfor -%}                
-{{ '            ' -}}
-}
+                "IDENTITY_COLLECTION_NAME": "Identity",
+                "PROFILE_COLLECTION_NAME": "Profile",
+                "ORGANIZATION_COLLECTION_NAME": "Organization",
+                "EVENT_COLLECTION_NAME": "Event",
+                "RESOURCE_COLLECTION_NAME": "Resource",
+                "PATH_COLLECTION_NAME": "Path",
+                "PLAN_COLLECTION_NAME": "Plan",
+                "ENCOUNTER_COLLECTION_NAME": "Encounter",
+                "CURRICULUM_COLLECTION_NAME": "Curriculum",
+                "RATING_COLLECTION_NAME": "Rating",
+                "REVIEW_COLLECTION_NAME": "Review",
+            }
             self.config_ints = {
-                # JWT Configuration
-                "JWT_TTL_MINUTES": "480",
-
                 # Service Port numbers 
-{% for domain in architecture.domains -%}
-{% for repo in domain.repos -%}
-{% if repo.type == 'api' -%}
-{{ '                ' -}}
-"{{ domain.name | upper }}_API_PORT": {{ repo.port }},
-{% elif repo.type == 'spa' or repo.type == 'spa_ref' -%}
-{{ '                ' -}}
-"{{ domain.name | upper }}_SPA_PORT": {{ repo.port }},
-{% endif -%}
-{% endfor -%}
-{% endfor %}                
+                "SCHEMA_API_PORT": 8383,
+                "SCHEMA_SPA_PORT": 8384,
+                "COMMON_CODE_API_PORT": 8385,
+                "COMMON_CODE_SPA_PORT": 8386,
+                "PROFILE_API_PORT": 8387,
+                "PROFILE_SPA_PORT": 8388,
+                "MENTOR_API_PORT": 8389,
+                "MENTOR_SPA_PORT": 8390,
+                "MEMBER_API_PORT": 8391,
+                "MEMBER_SPA_PORT": 8392,
+                
             }
 
             self.config_booleans = {
@@ -391,4 +401,3 @@ self.{{ domain.name | upper }}_SPA_PORT = 0
             
         # logger.log("Config Initializing")
         return Config._instance
-
