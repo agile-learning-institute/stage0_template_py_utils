@@ -19,7 +19,7 @@ requests = "*"
 
 [scripts]
 build = "sh scripts/check-merged && python -m build"
-dev = "sh scripts/check-merged && sh -c 'JWT_SECRET=mentorhub-local-dev-jwt-secret-fixed PYTHONPATH=. python api_utils/server.py'"
+dev = "sh scripts/check-merged && sh -c 'JWT_SECRET=local-dev-jwt-secret-fixed PYTHONPATH=. python api_utils/server.py'"
 test = "sh scripts/check-merged && sh -c 'PYTHONPATH=. pytest tests/ -v -m \"not e2e\"'"
 e2e = "sh scripts/check-merged && sh -c 'PYTHONPATH=. pytest tests/ -m e2e -v'"
 lint = "sh scripts/check-merged && black --check api_utils tests"
