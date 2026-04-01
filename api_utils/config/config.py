@@ -44,8 +44,10 @@ class Config:
         'engagement'
         >>> print(config.MONGODB_API_PORT)
         8180
-        >>> print(config.PROFILE_COLLECTION_NAME)
-        'Profile'
+{%- if dictionaries | length > 0 %}
+        >>> print(config.{{ dictionaries[0].name | replace(' ', '_') | replace('-', '_') | upper }}_COLLECTION_NAME)
+        '{{ dictionaries[0].name }}'
+{%- endif %}
         >>> print(config.DASHBOARD_API_PORT)
         8186
     """
@@ -92,18 +94,10 @@ class Config:
             self.ENUMERATORS_COLLECTION_NAME = ''
             self.VERSIONS_COLLECTION_NAME = ''
 
-            # Collection Names
-            self.IDENTITY_COLLECTION_NAME = ''
-            self.PROFILE_COLLECTION_NAME = ''
-            self.ORGANIZATION_COLLECTION_NAME = ''
-            self.EVENT_COLLECTION_NAME = ''
-            self.RESOURCE_COLLECTION_NAME = ''
-            self.PATH_COLLECTION_NAME = ''
-            self.PLAN_COLLECTION_NAME = ''
-            self.ENCOUNTER_COLLECTION_NAME = ''
-            self.CURRICULUM_COLLECTION_NAME = ''
-            self.RATING_COLLECTION_NAME = ''
-            self.REVIEW_COLLECTION_NAME = ''
+            # Data collection names (from catalog.data_dictionaries)
+{%- for d in dictionaries %}
+            self.{{ d.name | replace(' ', '_') | replace('-', '_') | upper }}_COLLECTION_NAME = ''
+{%- endfor %}
 
             # Service Port numbers
             self.SCHEMA_API_PORT = 0
@@ -136,18 +130,10 @@ class Config:
                 "ENUMERATORS_COLLECTION_NAME": "DatabaseEnumerators",
                 "VERSIONS_COLLECTION_NAME": "CollectionVersions",
                 
-                # Collection Names
-                "IDENTITY_COLLECTION_NAME": "Identity",
-                "PROFILE_COLLECTION_NAME": "Profile",
-                "ORGANIZATION_COLLECTION_NAME": "Organization",
-                "EVENT_COLLECTION_NAME": "Event",
-                "RESOURCE_COLLECTION_NAME": "Resource",
-                "PATH_COLLECTION_NAME": "Path",
-                "PLAN_COLLECTION_NAME": "Plan",
-                "ENCOUNTER_COLLECTION_NAME": "Encounter",
-                "CURRICULUM_COLLECTION_NAME": "Curriculum",
-                "RATING_COLLECTION_NAME": "Rating",
-                "REVIEW_COLLECTION_NAME": "Review",
+                # Data collection names (from catalog.data_dictionaries)
+{%- for d in dictionaries %}
+                "{{ d.name | replace(' ', '_') | replace('-', '_') | upper }}_COLLECTION_NAME": "{{ d.name }}",
+{%- endfor %}
             }
             self.config_ints = {
                 # Service Port numbers 
@@ -401,3 +387,4 @@ class Config:
             
         # logger.log("Config Initializing")
         return Config._instance
+

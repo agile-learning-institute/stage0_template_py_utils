@@ -12,7 +12,9 @@ test:
 	echo "Setting up temporary testing folder at $$TEMP_REPO..."; \
 	rm -rf "$$TEMP_REPO"; \
 	mkdir -p "$$TEMP_REPO"; \
-	cp -r . "$$TEMP_REPO"
+	cp -r . "$$TEMP_REPO"; \
+	find "$$TEMP_REPO" -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null || true; \
+	find "$$TEMP_REPO" -type d -name .pytest_cache -exec rm -rf {} + 2>/dev/null || true
 	@echo "Debug: Checking specifications structure..."; \
 	find .stage0_template/Specifications -name "*.yaml" | head -10
 	@echo "Running the container..."; \

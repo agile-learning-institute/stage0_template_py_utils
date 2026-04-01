@@ -44,6 +44,7 @@ templates:
     merge: true
   - path: "./pyproject.toml"
     merge: true
+  # Collection config keys are generated from specifications.catalog.data_dictionaries (context: dictionaries)
   - path: "./api_utils/config/config.py"
     merge: true
   - path: "./tests/test_server.py"
@@ -53,7 +54,7 @@ templates:
   - path: "./tests/test_data/config/STRING.template"
     mergeFor:
       items: dictionaries
-      output: "./tests/test_data/config/{{name | upper}}_COLLECTION_NAME"
+      output: "./tests/test_data/config/{{ name | replace(' ', '_') | replace('-', '_') | upper }}_COLLECTION_NAME"
 
   # Config Test Data for Port Numbers
   - path: "./tests/test_data/config/API_PORT.template"
