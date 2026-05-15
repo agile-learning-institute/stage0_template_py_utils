@@ -99,7 +99,7 @@ class Config:
             self.CREATE_COLLECTION_NAME = ''
             self.CONSUME_COLLECTION_NAME = ''
 
-            # Service Port numbers
+            # Service Port numbers (defaults from specifications.architecture domains)
             self.SCHEMA_API_PORT = 0
             self.SCHEMA_SPA_PORT = 0
             self.COMMON_CODE_API_PORT = 0
@@ -138,7 +138,7 @@ class Config:
                 "CONSUME_COLLECTION_NAME": "Consume",
             }
             self.config_ints = {
-                # Service Port numbers 
+                # Service Port numbers (from specifications.architecture domain repos)
                 "SCHEMA_API_PORT": 8383,
                 "SCHEMA_SPA_PORT": 8384,
                 "COMMON_CODE_API_PORT": 8385,
@@ -149,7 +149,6 @@ class Config:
                 "MENTOR_SPA_PORT": 8390,
                 "MEMBER_API_PORT": 8391,
                 "MEMBER_SPA_PORT": 8392,
-                
             }
 
             self.config_booleans = {

@@ -99,17 +99,12 @@ class Config:
             self.{{ d.name | replace(' ', '_') | replace('-', '_') | upper }}_COLLECTION_NAME = ''
 {%- endfor %}
 
-            # Service Port numbers
-            self.SCHEMA_API_PORT = 0
-            self.SCHEMA_SPA_PORT = 0
-            self.COMMON_CODE_API_PORT = 0
-            self.COMMON_CODE_SPA_PORT = 0
-            self.PROFILE_API_PORT = 0
-            self.PROFILE_SPA_PORT = 0
-            self.MENTOR_API_PORT = 0
-            self.MENTOR_SPA_PORT = 0
-            self.MEMBER_API_PORT = 0
-            self.MEMBER_SPA_PORT = 0
+            # Service Port numbers (defaults from specifications.architecture domains)
+{%- for domain in architecture.domains %}
+{%- set dom_key = domain.name | replace('-', '_') | replace(' ', '_') | upper %}
+            self.{{ dom_key }}_API_PORT = 0
+            self.{{ dom_key }}_SPA_PORT = 0
+{%- endfor %}
 
 
             # Default Values grouped by value type            
@@ -136,18 +131,16 @@ class Config:
 {%- endfor %}
             }
             self.config_ints = {
-                # Service Port numbers 
-                "SCHEMA_API_PORT": 8383,
-                "SCHEMA_SPA_PORT": 8384,
-                "COMMON_CODE_API_PORT": 8385,
-                "COMMON_CODE_SPA_PORT": 8386,
-                "PROFILE_API_PORT": 8387,
-                "PROFILE_SPA_PORT": 8388,
-                "MENTOR_API_PORT": 8389,
-                "MENTOR_SPA_PORT": 8390,
-                "MEMBER_API_PORT": 8391,
-                "MEMBER_SPA_PORT": 8392,
-                
+                # Service Port numbers (from specifications.architecture domain repos)
+{%- for domain in architecture.domains %}
+{%- set dom_key = domain.name | replace('-', '_') | replace(' ', '_') | upper %}
+{%- set api_repos = domain.repos | selectattr('type', 'equalto', 'api') | list %}
+{%- set spa_repos = domain.repos | selectattr('type', 'in', ['spa', 'spa_ref']) | list %}
+{%- set api_port = api_repos[0].port if api_repos else 0 %}
+{%- set spa_port = spa_repos[0].port if spa_repos else 0 %}
+                "{{ dom_key }}_API_PORT": {{ api_port }},
+                "{{ dom_key }}_SPA_PORT": {{ spa_port }},
+{%- endfor %}
             }
 
             self.config_booleans = {
